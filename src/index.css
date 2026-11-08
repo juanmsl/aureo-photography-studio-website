@@ -1,0 +1,194 @@
+@import "tailwindcss";
+@import "polpo-tailwind-config/styles";
+@import "polpo/components.css";
+
+@import "@fontsource/bricolage-grotesque/800.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/hanken-grotesk/400.css";
+@import "@fontsource/hanken-grotesk/500.css";
+@import "@fontsource/hanken-grotesk/600.css";
+
+/*
+ * Áureo · tema oscuro (único).
+ * Valores de la colección de variables "Áureo · Tema" del archivo de Figma AtRQGqGP7TBk8lSKPd3WOO.
+ */
+@theme {
+  /* color/* */
+  --color-fondo: #120f0d;
+  --color-plano: #1c1714;
+  --color-linea: #2a231e;
+  --color-linea-fuerte: #3a312a;
+  --color-texto: #e9e1d6;
+  --color-texto-fuerte: #f3dec0;
+  --color-texto-suave: #9a8f84;
+  --color-acento: #e8a75b;
+  --color-error: #d9735e;
+
+  /* Superficies y texto de Polpo */
+  --color-background: var(--color-fondo);
+  --color-background-paper: var(--color-plano);
+  --color-background-disabled: var(--color-plano);
+  --color-foreground: var(--color-texto);
+  --color-foreground-disabled: var(--color-texto-suave);
+  --color-border: var(--color-linea);
+
+  /* "primary" es el ámbar: botón primario relleno ámbar (hover luz pálida), texto penumbra */
+  --color-primary: #e8a75b;
+  --color-primary-50: #1c1714;
+  --color-primary-200: #3a312a;
+  --color-primary-300: #f3dec0;
+  --color-primary-400: #e8a75b;
+  --color-primary-500: #e8a75b;
+  --color-primary-600: #e9e1d6;
+  --color-primary-700: #e9e1d6;
+  --color-primary-foreground: #120f0d;
+
+  --color-info: #e8a75b;
+  --color-info-500: #e8a75b;
+  --color-alert: #d9735e;
+  --color-alert-500: #d9735e;
+
+  /* Tipografía */
+  --font-main: 'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-title: 'Bricolage Grotesque', 'Hanken Grotesk', sans-serif;
+  --font-brand: 'Bricolage Grotesque', 'Hanken Grotesk', sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  /* hero = Áureo/Display 70 · header1 = Titular 52 · header2 = Titular S 32 · header4 = Marca 22 */
+  --text-hero: clamp(2.5rem, 4.9vw, 4.375rem);
+  --text-hero--line-height: 0.96;
+  --text-hero--font-weight: 800;
+  --text-hero--letter-spacing: -0.03em;
+  --text-header1: clamp(2.125rem, 3.6vw, 3.25rem);
+  --text-header1--line-height: 1;
+  --text-header1--font-weight: 800;
+  --text-header1--letter-spacing: -0.025em;
+  --text-header2: clamp(1.5rem, 2.2vw, 2rem);
+  --text-header2--line-height: 1.1;
+  --text-header2--font-weight: 800;
+  --text-header2--letter-spacing: -0.015em;
+  --text-header3: clamp(1.25rem, 1.7vw, 1.5rem);
+  --text-header3--line-height: 1.1;
+  --text-header3--font-weight: 800;
+  --text-header3--letter-spacing: -0.01em;
+  --text-header4: clamp(1.25rem, 1.5vw, 1.375rem);
+  --text-header4--line-height: 1;
+  --text-header4--font-weight: 800;
+  --text-header4--letter-spacing: 0.06em;
+  --text-body: clamp(1rem, 1.25vw, 1.125rem);
+  --text-body--line-height: 1.65;
+  --text-label: 0.9375rem;
+  --text-label--line-height: 1.4;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.5;
+
+  /* Voces en Instrument Serif */
+  --text-cita: clamp(2rem, 3.75vw, 3.375rem);
+  --text-cita--line-height: 1.12;
+  --text-bajada: clamp(1.3125rem, 1.8vw, 1.625rem);
+  --text-bajada--line-height: 1.3;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  ::selection {
+    background: var(--color-acento);
+    color: var(--color-fondo);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Instrument Serif itálica: citas, bajadas y pies de foto */
+  .voz-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* Campo de Áureo sobre los campos de Polpo: solo línea inferior, foco ámbar */
+  .campo-aureo {
+    .form-field {
+      gap: 0.625rem;
+      color: var(--color-texto-suave);
+    }
+    .form-field.focus {
+      color: var(--color-texto-suave);
+    }
+    .field-label,
+    label {
+      margin: 0;
+      font-size: var(--text-label);
+      font-weight: 500;
+      color: var(--color-texto-suave);
+    }
+    .field-content {
+      border-bottom: 1px solid var(--color-linea-fuerte);
+      padding: 0.875rem 0;
+    }
+    .form-field.focus .field-content {
+      border-bottom: 2px solid var(--color-acento);
+      padding-bottom: calc(0.875rem - 1px);
+    }
+    .form-field.error .field-content {
+      border-bottom-color: var(--color-error);
+    }
+    input,
+    textarea {
+      font-size: var(--text-body);
+      line-height: 1.65;
+      color: var(--color-texto);
+    }
+    input::placeholder,
+    textarea::placeholder {
+      color: var(--color-texto-suave);
+      opacity: 0.8;
+    }
+    .field-message {
+      color: var(--color-error);
+      font-size: var(--text-small);
+    }
+  }
+}
+
+/*
+ * Tamaños como utilidades propias (t-*): el `cn` de Polpo (tailwind-merge) toma
+ * `text-<token>` como color y lo descarta al combinarlo con otro color, y en la
+ * capa de utilidades ganan a los tamaños de las variantes de Typography.
+ */
+@utility t-bajada {
+  font-size: var(--text-bajada);
+  line-height: var(--text-bajada--line-height, inherit);
+}
+
+@utility t-cita {
+  font-size: var(--text-cita);
+  line-height: var(--text-cita--line-height, inherit);
+}
+
+@utility t-header2 {
+  font-size: var(--text-header2);
+  line-height: var(--text-header2--line-height, inherit);
+}
+
+@utility t-header4 {
+  font-size: var(--text-header4);
+  line-height: var(--text-header4--line-height, inherit);
+}
+
+@utility t-label {
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height, inherit);
+}
+
+@utility t-small {
+  font-size: var(--text-small);
+  line-height: var(--text-small--line-height, inherit);
+}
