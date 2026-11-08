@@ -27,19 +27,35 @@ Cada push a `main` (por ejemplo, al hacer merge de un PR) publica el sitio en Gi
 lanzar a mano desde la pestaña **Actions** (Run workflow).
 
 - Una sola vez: en el repositorio, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- URL: `https://juanmsl.github.io/aureo-photography-studio-website/`. La ruta base sale de `actions/configure-pages`; si después se
-  configura un dominio propio, el sitio pasa a servirse desde la raíz sin cambiar nada más.
-- `vite.config.ts` toma la ruta base de `BASE_PATH` (en local es `/`), el router usa
-  `import.meta.env.BASE_URL` como `basename` y las fotos de `public/` se piden con esa misma base.
+- URL: **https://aureostudio.co** (dominio propio). Configuración, una sola vez:
+  - **Settings → Pages → Custom domain:** `aureostudio.co` y, cuando el DNS responda, **Enforce HTTPS**.
+  - DNS del dominio: registros **A** de `aureostudio.co` a `185.199.108.153`, `185.199.109.153`,
+    `185.199.110.153` y `185.199.111.153` (opcional, **AAAA** a `2606:50c0:8000::153` … `2606:50c0:8003::153`) y
+    un **CNAME** de `www` a `juanmsl.github.io`.
+  - No hace falta archivo `CNAME`: con despliegue por Actions, GitHub lo ignora y guarda el dominio en Settings.
+  - Después de configurar el dominio hay que volver a desplegar (Actions → Run workflow) para que el sitio se
+    compile para la raíz.
+- La ruta base sale de `actions/configure-pages`: con dominio propio es `/`; sin él sería `/<repositorio>/`.
+  `vite.config.ts` la toma de `BASE_PATH` (en local es `/`), el router usa `import.meta.env.BASE_URL` como
+  `basename` y las fotos de `public/` se piden con esa misma base.
 - Como GitHub Pages no conoce las rutas de la app, el workflow copia `index.html` a `404.html` para que los
-  enlaces directos (p. ej. `/aureo-photography-studio-website/obra`) también abran.
+  enlaces directos (p. ej. `aureostudio.co/obra`) también abran.
+
+## Buscadores y enlaces compartidos
+
+- `index.html`: descripción, URL canónica y etiquetas Open Graph / X con `public/og.jpg` (1200×630, hecha con una
+  foto provisional del moodboard; cambiarla cuando haya fotos y logo propios).
+- `src/components/Metadatos.tsx`: título, descripción y URL canónica de cada ruta; marca `noindex` en
+  "Mensaje enviado" y en la página 404.
+- `public/robots.txt` y `public/sitemap.xml` (rutas principales). Si cambia el dominio, actualizar estos dos
+  archivos, `index.html` y `SITIO_URL` en `src/content/estudio.ts`.
 
 ## Estructura
 
 ```
 src/
   content/estudio.ts   Marca (eslogan, declaración aprobada), disciplinas, fotos, navegación
-  components/          Enlace, Chip, FotoIluminada (caída de luz), PieDeFoto, Marco (navegación, menú, pie, llamado a conversar)
+  components/          Enlace, Chip, FotoIluminada (caída de luz), PieDeFoto, Marco (navegación, menú, pie, llamado a conversar), Metadatos (título y URL canónica por ruta)
   pages/               Inicio, Obra, ObraFoto, Estudio, Disciplinas, Contacto, MensajeEnviado, Pendiente (404)
   index.css            Tema de Polpo con la colección "Áureo · Tema"
 .claude/skills/polpo   Instrucciones de Polpo para agentes
