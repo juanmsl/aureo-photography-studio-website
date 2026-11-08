@@ -3,6 +3,9 @@
  * (eslogan, frase secundaria y declaración). No cambiarlos sin consultar.
  */
 
+/** Dominio público del sitio (GitHub Pages con dominio propio). */
+export const SITIO_URL = 'https://aureostudio.co';
+
 export const marca = {
   nombre: 'Áureo',
   descriptor: 'Estudio Fotográfico',
