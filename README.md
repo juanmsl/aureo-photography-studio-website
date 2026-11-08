@@ -20,6 +20,20 @@ pnpm lint:fix  # ESLint con correcciones automáticas
 pnpm preview   # sirve dist/
 ```
 
+## Despliegue
+
+Cada push a `main` (por ejemplo, al hacer merge de un PR) publica el sitio en GitHub Pages con
+`.github/workflows/deploy.yml`: instala con pnpm, corre `pnpm lint`, compila y sube `dist/`. También se puede
+lanzar a mano desde la pestaña **Actions** (Run workflow).
+
+- Una sola vez: en el repositorio, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+- URL: `https://juanmsl.github.io/aureo-photography-studio-website/`. La ruta base sale de `actions/configure-pages`; si después se
+  configura un dominio propio, el sitio pasa a servirse desde la raíz sin cambiar nada más.
+- `vite.config.ts` toma la ruta base de `BASE_PATH` (en local es `/`), el router usa
+  `import.meta.env.BASE_URL` como `basename` y las fotos de `public/` se piden con esa misma base.
+- Como GitHub Pages no conoce las rutas de la app, el workflow copia `index.html` a `404.html` para que los
+  enlaces directos (p. ej. `/aureo-photography-studio-website/obra`) también abran.
+
 ## Estructura
 
 ```
