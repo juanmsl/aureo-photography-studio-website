@@ -1,5 +1,6 @@
-import { cn } from 'polpo/helpers';
 import type { ReactNode } from 'react';
+
+import { cn } from 'polpo/helpers';
 import { Link } from 'react-router';
 
 type EnlaceProps = {

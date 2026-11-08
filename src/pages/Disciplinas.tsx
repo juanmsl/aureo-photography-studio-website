@@ -25,6 +25,7 @@ export const Disciplinas = () => (
         <ul className='m-0 list-none border-b border-linea p-0'>
           {disciplinas.map(d => {
             const hayObra = obra.some(o => o.disciplina === d.slug);
+
             return (
               <li key={d.slug} id={d.slug} className='scroll-mt-6 border-t border-linea'>
                 <article className='grid gap-4 py-6 md:grid-cols-[minmax(0,31.25rem)_minmax(0,25.75rem)_15rem] md:items-center md:justify-between md:gap-12 md:py-7'>
@@ -36,7 +37,10 @@ export const Disciplinas = () => (
                       {d.descripcion}
                     </Typography>
                     {hayObra && (
-                      <Link to={`/obra?disciplina=${d.slug}`} className='t-label self-start font-medium text-acento underline decoration-1 underline-offset-[0.4em] hover:text-texto-fuerte'>
+                      <Link
+                        to={`/obra?disciplina=${d.slug}`}
+                        className='t-label self-start font-medium text-acento underline decoration-1 underline-offset-[0.4em] hover:text-texto-fuerte'
+                      >
                         Ver obra de {d.nombre.toLowerCase()}
                       </Link>
                     )}

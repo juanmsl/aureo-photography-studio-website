@@ -9,6 +9,7 @@ import { Navegacion, PiePagina } from '../components/Marco';
  */
 export const Pendiente = ({ titulo }: { titulo?: string }) => {
   const navigate = useNavigate();
+
   return (
     <>
       <Navegacion />

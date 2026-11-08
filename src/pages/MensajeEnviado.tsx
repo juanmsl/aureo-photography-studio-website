@@ -2,6 +2,7 @@ import { Button, Typography } from 'polpo/components';
 import { useLocation, useNavigate } from 'react-router';
 
 import { Navegacion } from '../components/Marco';
+
 import type { Mensaje } from '../content/estudio';
 
 export const MensajeEnviado = () => {

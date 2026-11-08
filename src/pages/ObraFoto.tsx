@@ -21,17 +21,21 @@ export const ObraFoto = () => {
 
   const ir = (paso: number) => {
     if (i < 0) return;
+
     const sig = lista[(i + paso + lista.length) % lista.length];
     navigate(`/obra/${sig.slug}${consulta}`, { replace: true });
   };
 
   useEventListener('keydown', (e: KeyboardEvent) => {
     if (e.key === 'ArrowLeft') ir(-1);
+
     if (e.key === 'ArrowRight') ir(1);
+
     if (e.key === 'Escape') navigate(`/obra${consulta}`);
   });
 
   if (i < 0) return <Pendiente />;
+
   const o = lista[i];
 
   return (
@@ -57,10 +61,18 @@ export const ObraFoto = () => {
         <div className='mt-6 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between'>
           <PieDeFoto titulo={o.titulo} disciplina={nombreDisciplina(o.disciplina)} className='mt-0' />
           <div className='flex flex-wrap items-center gap-x-8 gap-y-5'>
-            <button type='button' onClick={() => ir(-1)} className='t-label cursor-pointer bg-transparent p-0 font-medium text-texto-suave hover:text-texto-fuerte'>
+            <button
+              type='button'
+              onClick={() => ir(-1)}
+              className='t-label cursor-pointer bg-transparent p-0 font-medium text-texto-suave hover:text-texto-fuerte'
+            >
               Anterior
             </button>
-            <button type='button' onClick={() => ir(1)} className='t-label cursor-pointer bg-transparent p-0 font-medium text-texto-suave hover:text-texto-fuerte'>
+            <button
+              type='button'
+              onClick={() => ir(1)}
+              className='t-label cursor-pointer bg-transparent p-0 font-medium text-texto-suave hover:text-texto-fuerte'
+            >
               Siguiente
             </button>
             <Button

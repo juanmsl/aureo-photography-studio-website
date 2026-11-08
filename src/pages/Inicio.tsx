@@ -11,8 +11,12 @@ import { declaracion, disciplinas, marca, obraDestacada } from '../content/estud
 
 const Portada = () => {
   const navigate = useNavigate();
+
   return (
-    <section aria-labelledby='eslogan' className='relative flex flex-col overflow-hidden md:min-h-[min(100dvh,56.25rem)]'>
+    <section
+      aria-labelledby='eslogan'
+      className='relative flex flex-col overflow-hidden md:min-h-[min(100dvh,56.25rem)]'
+    >
       <span
         aria-hidden
         className='pointer-events-none absolute top-[27.5rem] left-[10%] h-[16rem] w-[26rem] rounded-full bg-acento/20 blur-[90px] md:top-auto md:bottom-[-11rem] md:left-[36%] md:h-[23.75rem] md:w-[58.75rem] md:blur-[130px]'
@@ -74,6 +78,7 @@ const Declaracion = () => (
 
 const Obra = () => {
   const [umbral, nervaduras, mirada, entreabierta] = obraDestacada;
+
   return (
     <section aria-labelledby='titulo-obra' className='px-5 py-16 md:px-24 md:pt-30 md:pb-12'>
       <div className='flex flex-col gap-4 md:flex-row md:items-start md:justify-between'>
@@ -100,8 +105,8 @@ const Obra = () => {
         <div className='grid content-start gap-10 md:gap-0'>
           <figure className='m-0'>
             <Link to={`/obra/${nervaduras.foto}`} aria-label={`${nervaduras.titulo}, ver ampliada`} className='block'>
-            <FotoIluminada id={nervaduras.foto} className='aspect-[624/380] w-full' />
-          </Link>
+              <FotoIluminada id={nervaduras.foto} className='aspect-[624/380] w-full' />
+            </Link>
             <PieDeFoto titulo={nervaduras.titulo} disciplina={nervaduras.disciplina} />
           </figure>
           <div className='grid grid-cols-[300fr_280fr] gap-2.5 md:mt-1.5 md:gap-11'>
@@ -111,8 +116,8 @@ const Obra = () => {
             ].map(o => (
               <figure key={o.titulo} className='m-0'>
                 <Link to={`/obra/${o.foto}`} aria-label={`${o.titulo}, ver ampliada`} className='block'>
-            <FotoIluminada id={o.foto} caida={0.45} className={`${o.proporcion} w-full`} />
-          </Link>
+                  <FotoIluminada id={o.foto} caida={0.45} className={`${o.proporcion} w-full`} />
+                </Link>
                 <PieDeFoto titulo={o.titulo} disciplina={o.disciplina} />
               </figure>
             ))}
@@ -133,6 +138,7 @@ const Obra = () => {
 
 const Disciplinas = () => {
   const [activa, setActiva] = useState<string | null>(null);
+
   return (
     <section aria-labelledby='titulo-disciplinas' className='px-5 py-16 md:px-24 md:pt-35 md:pb-28'>
       <div className='grid gap-10 md:grid-cols-[minmax(0,28.75rem)_minmax(0,39rem)] md:justify-between md:gap-16'>
@@ -144,13 +150,14 @@ const Disciplinas = () => {
             {marca.fraseSecundaria}
           </Typography>
           <Typography noPadding className='m-0 max-w-[27.5rem] text-texto-suave'>
-            El sello del estudio no es un género, sino una manera de observar. La misma atención llega a un paisaje, a un
-            rostro, a un espacio o a un objeto.
+            El sello del estudio no es un género, sino una manera de observar. La misma atención llega a un paisaje, a
+            un rostro, a un espacio o a un objeto.
           </Typography>
         </div>
         <ul className='m-0 list-none border-b border-linea p-0' onMouseLeave={() => setActiva(null)}>
           {disciplinas.map(d => {
             const encendida = activa === d.slug;
+
             return (
               <li key={d.slug} className='border-t border-linea'>
                 <Link

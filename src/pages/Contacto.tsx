@@ -11,7 +11,7 @@ import { canales, disciplinas, type Mensaje } from '../content/estudio';
 /** Selección múltiple de disciplinas con los chips de Áureo. */
 const ChipsDisciplinas = ({ control }: { control: ReturnType<typeof useForm<Mensaje>>['control'] }) => {
   const { field } = useController({ name: 'disciplinas', control });
-  const valor: string[] = field.value ?? [];
+  const valor: Array<string> = field.value ?? [];
   const alternar = (nombre: string) =>
     field.onChange(valor.includes(nombre) ? valor.filter(v => v !== nombre) : [...valor, nombre]);
 
@@ -39,7 +39,9 @@ export const Contacto = () => {
   const enviar = methods.handleSubmit(async datos => {
     setEnviando(true);
     // Pendiente: conectar con el servicio que reciba los mensajes del estudio.
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => {
+      setTimeout(r, 600);
+    });
     navigate('/contacto/enviado', { state: datos });
   });
 
@@ -87,7 +89,13 @@ export const Contacto = () => {
                 </div>
 
                 <div className='grid gap-9 md:grid-cols-2 md:gap-8'>
-                  <Input.Controller name='whatsapp' label='WhatsApp (opcional)' placeholder='+57 300 000 0000' autoComplete='tel' variant='line' />
+                  <Input.Controller
+                    name='whatsapp'
+                    label='WhatsApp (opcional)'
+                    placeholder='+57 300 000 0000'
+                    autoComplete='tel'
+                    variant='line'
+                  />
                   <DatePicker.Controller name='fecha' type='month' label='Fecha aproximada' variant='line' />
                 </div>
 

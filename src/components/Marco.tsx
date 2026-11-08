@@ -85,7 +85,11 @@ export const Navegacion = ({ className }: { className?: string }) => {
           <ul className='m-0 mt-32 grid list-none gap-2.5 p-0'>
             {navegacion.map(e => (
               <li key={e.a}>
-                <Link to={e.a} onClick={cerrar} className='font-title text-[2.75rem] leading-none font-extrabold tracking-[-0.03em] text-texto'>
+                <Link
+                  to={e.a}
+                  onClick={cerrar}
+                  className='font-title text-[2.75rem] leading-none font-extrabold tracking-[-0.03em] text-texto'
+                >
                   {e.etiqueta}
                 </Link>
               </li>
@@ -136,8 +140,12 @@ export const PiePagina = () => (
 /** "Conversemos sobre lo que quieres mostrar." con su luz ámbar detrás. */
 export const LlamadoConversar = () => {
   const navigate = useNavigate();
+
   return (
-    <section aria-labelledby='titulo-conversar' className='relative overflow-hidden px-5 py-22 md:px-24 md:pt-55 md:pb-60'>
+    <section
+      aria-labelledby='titulo-conversar'
+      className='relative overflow-hidden px-5 py-22 md:px-24 md:pt-55 md:pb-60'
+    >
       <span
         aria-hidden
         className='pointer-events-none absolute top-1/2 left-1/2 h-[26rem] w-[min(51rem,110vw)] -translate-x-1/2 -translate-y-1/2 rounded-full bg-acento/20 blur-[140px]'

@@ -27,14 +27,30 @@ const PATRON = [
 
 const Pieza = ({ o, i, consulta }: { o: ObraT; i: number; consulta: string }) => {
   const forma = PATRON[i % PATRON.length];
+
   return (
-    <figure className={cn('m-0', forma.split(' ').filter(c => c.includes('span')).join(' '))}>
-      <Link to={`/obra/${o.slug}${consulta}`} className='group block' aria-label={`${o.titulo}, ${nombreDisciplina(o.disciplina)}. Ver ampliada`}>
+    <figure
+      className={cn(
+        'm-0',
+        forma
+          .split(' ')
+          .filter(c => c.includes('span'))
+          .join(' '),
+      )}
+    >
+      <Link
+        to={`/obra/${o.slug}${consulta}`}
+        className='group block'
+        aria-label={`${o.titulo}, ${nombreDisciplina(o.disciplina)}. Ver ampliada`}
+      >
         <FotoIluminada
           id={o.foto}
           className={cn(
             'w-full transition-[filter] duration-500 group-hover:brightness-110 motion-reduce:transition-none',
-            forma.split(' ').filter(c => !c.includes('span')).join(' '),
+            forma
+              .split(' ')
+              .filter(c => !c.includes('span'))
+              .join(' '),
           )}
         />
       </Link>
@@ -68,7 +84,11 @@ export const Obra = () => {
           <Typography noPadding className='voz-serif m-0 mt-3 max-w-[35rem] t-bajada text-texto-suave'>
             Fotografías de distintas disciplinas, cada una con su propia luz.
           </Typography>
-          <div role='group' aria-label='Filtrar por disciplina' className='-mx-5 mt-10 flex gap-2.5 overflow-x-auto px-5 pb-1 md:mx-0 md:mt-12 md:flex-wrap md:px-0'>
+          <div
+            role='group'
+            aria-label='Filtrar por disciplina'
+            className='-mx-5 mt-10 flex gap-2.5 overflow-x-auto px-5 pb-1 md:mx-0 md:mt-12 md:flex-wrap md:px-0'
+          >
             <Chip activo={!filtro} onClick={() => elegir(null)} className='shrink-0'>
               Todas
             </Chip>
@@ -92,7 +112,13 @@ export const Obra = () => {
               <Typography noPadding className='voz-serif m-0 t-bajada text-texto'>
                 Todavía no hay fotografías de {nombreDisciplina(filtro ?? '').toLowerCase()} en esta selección.
               </Typography>
-              <Button color='primary' variant='outlined' radius='full' className='border-texto-suave hover:border-acento' onClick={() => elegir(null)}>
+              <Button
+                color='primary'
+                variant='outlined'
+                radius='full'
+                className='border-texto-suave hover:border-acento'
+                onClick={() => elegir(null)}
+              >
                 Ver todas
               </Button>
             </div>

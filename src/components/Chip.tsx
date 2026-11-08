@@ -1,5 +1,6 @@
-import { cn } from 'polpo/helpers';
 import type { ButtonHTMLAttributes } from 'react';
+
+import { cn } from 'polpo/helpers';
 
 type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & { activo?: boolean };
 

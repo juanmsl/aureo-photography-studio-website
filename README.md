@@ -15,7 +15,8 @@ Requiere Node 24 (`.nvmrc`) y pnpm 11.10.0 (`packageManager`; con `corepack enab
 pnpm install
 pnpm dev       # servidor de desarrollo
 pnpm build     # tipos + compilación a dist/
-pnpm lint      # oxlint
+pnpm lint      # ESLint (polpo-eslint-config)
+pnpm lint:fix  # ESLint con correcciones automáticas
 pnpm preview   # sirve dist/
 ```
 

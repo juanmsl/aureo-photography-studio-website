@@ -58,20 +58,65 @@ export const fotos: Record<FotoId, { archivo: string; descripcion: string }> = {
 export type Disciplina = { nombre: string; slug: string; descripcion: string; foto: FotoId };
 
 /** Las nueve disciplinas, en el orden del estudio. Ninguna domina. */
-export const disciplinas: Disciplina[] = [
-  { nombre: 'Naturaleza', slug: 'naturaleza', descripcion: 'Flora, fauna y los detalles del mundo natural.', foto: 'hoja' },
-  { nombre: 'Paisaje', slug: 'paisaje', descripcion: 'Lugares abiertos y la luz que los transforma a lo largo del día.', foto: 'arco' },
-  { nombre: 'Macrofotografía', slug: 'macrofotografia', descripcion: 'Lo muy pequeño, visto de cerca: texturas, nervaduras, gotas.', foto: 'nervaduras' },
-  { nombre: 'Retrato', slug: 'retrato', descripcion: 'Personas, a solas o en grupo, con luz natural o de estudio.', foto: 'mirada' },
-  { nombre: 'Moda', slug: 'moda', descripcion: 'Prendas y accesorios para marcas, lookbooks y editoriales.', foto: 'iris' },
-  { nombre: 'Arquitectura', slug: 'arquitectura', descripcion: 'Edificios, fachadas y las formas que la luz revela en ellos.', foto: 'umbral' },
-  { nombre: 'Interiores', slug: 'interiores', descripcion: 'Espacios habitados: casas, hoteles, restaurantes y oficinas.', foto: 'entreabierta' },
-  { nombre: 'Eventos', slug: 'eventos', descripcion: 'Celebraciones y encuentros contados con discreción.', foto: 'contraluz' },
-  { nombre: 'Producto', slug: 'producto', descripcion: 'Objetos para tienda en línea, catálogo y campañas.', foto: 'helecho' },
+export const disciplinas: Array<Disciplina> = [
+  {
+    nombre: 'Naturaleza',
+    slug: 'naturaleza',
+    descripcion: 'Flora, fauna y los detalles del mundo natural.',
+    foto: 'hoja',
+  },
+  {
+    nombre: 'Paisaje',
+    slug: 'paisaje',
+    descripcion: 'Lugares abiertos y la luz que los transforma a lo largo del día.',
+    foto: 'arco',
+  },
+  {
+    nombre: 'Macrofotografía',
+    slug: 'macrofotografia',
+    descripcion: 'Lo muy pequeño, visto de cerca: texturas, nervaduras, gotas.',
+    foto: 'nervaduras',
+  },
+  {
+    nombre: 'Retrato',
+    slug: 'retrato',
+    descripcion: 'Personas, a solas o en grupo, con luz natural o de estudio.',
+    foto: 'mirada',
+  },
+  {
+    nombre: 'Moda',
+    slug: 'moda',
+    descripcion: 'Prendas y accesorios para marcas, lookbooks y editoriales.',
+    foto: 'iris',
+  },
+  {
+    nombre: 'Arquitectura',
+    slug: 'arquitectura',
+    descripcion: 'Edificios, fachadas y las formas que la luz revela en ellos.',
+    foto: 'umbral',
+  },
+  {
+    nombre: 'Interiores',
+    slug: 'interiores',
+    descripcion: 'Espacios habitados: casas, hoteles, restaurantes y oficinas.',
+    foto: 'entreabierta',
+  },
+  {
+    nombre: 'Eventos',
+    slug: 'eventos',
+    descripcion: 'Celebraciones y encuentros contados con discreción.',
+    foto: 'contraluz',
+  },
+  {
+    nombre: 'Producto',
+    slug: 'producto',
+    descripcion: 'Objetos para tienda en línea, catálogo y campañas.',
+    foto: 'helecho',
+  },
 ];
 
 /** Selección de la portada (sección Obra de Inicio). */
-export const obraDestacada: { foto: FotoId; titulo: string; disciplina: string }[] = [
+export const obraDestacada: Array<{ foto: FotoId; titulo: string; disciplina: string }> = [
   { foto: 'umbral', titulo: 'Umbral', disciplina: 'Arquitectura' },
   { foto: 'nervaduras', titulo: 'Nervaduras', disciplina: 'Macrofotografía' },
   { foto: 'mirada', titulo: 'Mirada', disciplina: 'Retrato' },
@@ -96,7 +141,7 @@ export type Obra = {
  * Obra del estudio (provisional: imágenes del moodboard). El orden es el de la
  * página Obra; las primeras ocho se muestran de entrada.
  */
-export const obra: Obra[] = [
+export const obra: Array<Obra> = [
   { slug: 'umbral', titulo: 'Umbral', disciplina: 'arquitectura', foto: 'umbral' },
   { slug: 'nervaduras', titulo: 'Nervaduras', disciplina: 'macrofotografia', foto: 'nervaduras' },
   { slug: 'mirada', titulo: 'Mirada', disciplina: 'retrato', foto: 'mirada' },
@@ -131,7 +176,7 @@ export const canales = [
 ];
 
 export type Mensaje = {
-  disciplinas: string[];
+  disciplinas: Array<string>;
   nombre: string;
   correo: string;
   whatsapp: string;
