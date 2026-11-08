@@ -27,7 +27,7 @@ export const FotoIluminada = ({ id, className, caida = 0.5, circulo, prioridad, 
     <div className={cn('relative overflow-hidden bg-plano', circulo && 'rounded-full', className)}>
       {!fallo && (
         <img
-          src={`/fotos/${info.archivo}`}
+          src={`${import.meta.env.BASE_URL}fotos/${info.archivo}`}
           alt={info.descripcion}
           loading={prioridad ? 'eager' : 'lazy'}
           decoding='async'
