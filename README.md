@@ -1,88 +1,97 @@
 # Áureo · Estudio Fotográfico
 
-Sitio de Áureo, la marca de estudio. Es un proyecto independiente del portafolio de Lina Nieto. React 19 +
-TypeScript + Vite, con la librería de UI [Polpo](https://ui.juanmsl.com) y Tailwind CSS v4. Gestor de paquetes:
-pnpm.
+Website for Áureo, the studio brand. It is a project independent from Lina Nieto's portfolio. React 19 +
+TypeScript + Vite, with the [Polpo](https://ui.juanmsl.com) UI library and Tailwind CSS v4. Package manager: pnpm.
 
-Diseño: archivo de Figma `AtRQGqGP7TBk8lSKPd3WOO` (páginas "Escritorio — Áureo" y "Móvil — Áureo", solo tema
-oscuro). Contexto de marca en `docs/CONTEXT.md` y `docs/PRODUCT.md`.
+Design: Figma file `AtRQGqGP7TBk8lSKPd3WOO` ("Escritorio — Áureo" and "Móvil — Áureo" pages, dark theme only).
+Brand context in `docs/CONTEXT.md` (kept in Spanish) and `docs/PRODUCT.md`.
 
-## Comandos
+**Language convention:** code, file names, comments and docs are in English; everything the visitor sees
+(copy, URLs, aria labels, alt text) is in Spanish.
 
-Requiere Node 24 (`.nvmrc`) y pnpm 11.10.0 (`packageManager`; con `corepack enable` se activa sola). `engines` en `package.json` y `engineStrict` en `pnpm-workspace.yaml` hacen que `pnpm install` se niegue a correr con otra versión.
+## Commands
+
+Requires Node 24 (`.nvmrc`) and pnpm 11.10.0 (`packageManager`; `corepack enable` activates it). `engines` in
+`package.json` plus `engineStrict` in `pnpm-workspace.yaml` make `pnpm install` refuse to run on other versions.
 
 ```sh
 pnpm install
-pnpm dev       # servidor de desarrollo
-pnpm build     # tipos + compilación a dist/
+pnpm dev       # dev server
+pnpm build     # type check + build to dist/
 pnpm lint      # ESLint (polpo-eslint-config)
-pnpm lint:fix  # ESLint con correcciones automáticas
-pnpm preview   # sirve dist/
+pnpm lint:fix  # ESLint with automatic fixes
+pnpm preview   # serve dist/
 ```
 
-## Despliegue
+## Deployment
 
-Cada push a `main` (por ejemplo, al hacer merge de un PR) publica el sitio en GitHub Pages con
-`.github/workflows/deploy.yml`: instala con pnpm, corre `pnpm lint`, compila y sube `dist/`. También se puede
-lanzar a mano desde la pestaña **Actions** (Run workflow).
+Every push to `main` (for example, merging a PR) publishes the site to GitHub Pages through
+`.github/workflows/deploy.yml`: it installs with pnpm, runs `pnpm lint`, builds and uploads `dist/`. It can also be
+run manually from the **Actions** tab (Run workflow).
 
-- Una sola vez: en el repositorio, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- URL: **https://aureostudio.co** (dominio propio). Configuración, una sola vez:
-  - **Settings → Pages → Custom domain:** `aureostudio.co` y, cuando el DNS responda, **Enforce HTTPS**.
-  - DNS del dominio: registros **A** de `aureostudio.co` a `185.199.108.153`, `185.199.109.153`,
-    `185.199.110.153` y `185.199.111.153` (opcional, **AAAA** a `2606:50c0:8000::153` … `2606:50c0:8003::153`) y
-    un **CNAME** de `www` a `juanmsl.github.io`.
-  - No hace falta archivo `CNAME`: con despliegue por Actions, GitHub lo ignora y guarda el dominio en Settings.
-  - Después de configurar el dominio hay que volver a desplegar (Actions → Run workflow) para que el sitio se
-    compile para la raíz.
-- La ruta base sale de `actions/configure-pages`: con dominio propio es `/`; sin él sería `/<repositorio>/`.
-  `vite.config.ts` la toma de `BASE_PATH` (en local es `/`), el router usa `import.meta.env.BASE_URL` como
-  `basename` y las fotos de `public/` se piden con esa misma base.
-- Como GitHub Pages no conoce las rutas de la app, el workflow copia `index.html` a `404.html` para que los
-  enlaces directos (p. ej. `aureostudio.co/obra`) también abran.
+- Once: in the repository, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+- URL: **https://aureostudio.co** (custom domain). One-time setup:
+  - **Settings → Pages → Custom domain:** `aureostudio.co` and, once DNS resolves, **Enforce HTTPS**.
+  - DNS: **A** records for `aureostudio.co` to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
+    `185.199.111.153` (optionally **AAAA** to `2606:50c0:8000::153` … `2606:50c0:8003::153`) and a **CNAME** from
+    `www` to `juanmsl.github.io`.
+  - No `CNAME` file is needed: with Actions deployments GitHub ignores it and stores the domain in Settings.
+  - After setting the domain, redeploy (Actions → Run workflow) so the site is built for the root path.
+- The base path comes from `actions/configure-pages`: `/` with a custom domain, `/<repository>/` without one.
+  `vite.config.ts` reads it from `BASE_PATH` (`/` locally), the router uses `import.meta.env.BASE_URL` as its
+  `basename`, and photos in `public/` are requested with the same base.
+- GitHub Pages does not know the app's routes, so the workflow copies `index.html` to `404.html` and direct links
+  (e.g. `aureostudio.co/obra`) still open.
 
-## Buscadores y enlaces compartidos
+## Search engines and link previews
 
-- `index.html`: descripción, URL canónica y etiquetas Open Graph / X con `public/og.jpg` (1200×630, hecha con una
-  foto provisional del moodboard; cambiarla cuando haya fotos y logo propios).
-- `src/components/Metadatos.tsx`: título, descripción y URL canónica de cada ruta; marca `noindex` en
-  "Mensaje enviado" y en la página 404.
-- `public/robots.txt` y `public/sitemap.xml` (rutas principales). Si cambia el dominio, actualizar estos dos
-  archivos, `index.html` y `SITIO_URL` en `src/content/estudio.ts`.
+- `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, made from a
+  provisional moodboard photo; replace it once there are own photos and a logo).
+- `src/components/PageMeta.tsx`: title, description and canonical URL for each route; `noindex` on "Mensaje
+  enviado" and the 404 page.
+- `public/robots.txt` and `public/sitemap.xml` (main routes). If the domain changes, update both files,
+  `index.html` and `SITE_URL` in `src/content/studio.ts`.
 
-## Estructura
+## Structure
 
 ```
 src/
-  content/estudio.ts   Marca (eslogan, declaración aprobada), disciplinas, fotos, navegación
-  components/          Enlace, Chip, FotoIluminada (caída de luz), PieDeFoto, Marco (navegación, menú, pie, llamado a conversar), Metadatos (título y URL canónica por ruta)
-  pages/               Inicio, Obra, ObraFoto, Estudio, Disciplinas, Contacto, MensajeEnviado, Pendiente (404)
-  index.css            Tema de Polpo con la colección "Áureo · Tema"
-.claude/skills/polpo   Instrucciones de Polpo para agentes
-docs/                  CONTEXT.md (decisiones de marca) y PRODUCT.md (contexto de producto)
+  content/studio.ts    Brand (slogan, approved statement), disciplines, photos, works, navigation
+  components/          TextLink, Chip, LitPhoto (light falloff), PhotoCaption, Layout (navigation, menu, footer, conversation CTA), PageMeta (title and canonical URL per route)
+  pages/               HomePage, WorkPage, WorkPhotoPage, StudioPage, DisciplinesPage, ContactPage, MessageSentPage, NotFoundPage
+  index.css            Polpo theme with the "Áureo · Tema" collection
+.claude/skills/polpo   Polpo instructions for agents
+docs/                  CONTEXT.md (brand decisions, in Spanish) and PRODUCT.md (product context)
 ```
 
-## Estado
+## Theme
 
-Todas las pantallas del diseño están construidas, en escritorio y móvil:
+`src/index.css` maps the Figma variables to Tailwind tokens: `ground` #120F0D, `surface` #1C1714, `line` #2A231E,
+`line-strong` #3A312A, `fg` #E9E1D6, `fg-strong` #F3DEC0, `fg-muted` #9A8F84, `accent` (amber) #E8A75B and `error`
+#D9735E. `primary` is the amber accent (filled primary button, pale light on hover). Typefaces: Bricolage
+Grotesque ExtraBold, Instrument Serif italic (`serif-voice`, `t-quote`, `t-subtitle`) and Hanken Grotesk.
 
-| Ruta | Página |
+## Status
+
+Every screen in the design is built, for desktop and mobile. Routes stay in Spanish because visitors see them:
+
+| Route | Page |
 | --- | --- |
-| `/` | Inicio |
-| `/obra` | Obra, con filtro por disciplina (`?disciplina=retrato`) y "Cargar más fotografías" |
-| `/obra/:slug` | Obra · Foto (flechas del teclado para pasar fotos, Esc para cerrar) |
-| `/estudio` | Estudio |
-| `/disciplinas` | Disciplinas (anclas `#naturaleza`, `#retrato`…) |
-| `/contacto` | Contacto (formulario) |
-| `/contacto/enviado` | Mensaje enviado |
+| `/` | Home |
+| `/obra` | Work, with a discipline filter (`?disciplina=retrato`) and "Cargar más fotografías" |
+| `/obra/:slug` | Work photo (arrow keys to move between photos, Esc to close) |
+| `/estudio` | Studio |
+| `/disciplinas` | Disciplines (anchors `#naturaleza`, `#retrato`…) |
+| `/contacto` | Contact (form) |
+| `/contacto/enviado` | Message sent |
 
-## Pendiente antes de publicar
+## Pending before launch
 
-- **Fotos**: las de `public/fotos/` son las imágenes del moodboard, provisionales; no son fotografías del estudio.
-- **Logo**: `ÁUREO` en Bricolage es un logotipo tipográfico provisional; el logo se diseña después.
-- **Contacto**: correo, WhatsApp e Instagram del estudio están por definir (`canales` en `src/content/estudio.ts`).
-- **Formulario**: el envío está simulado; falta conectarlo a un servicio que reciba los mensajes.
-- **Textos propuestos** de Estudio ("Por qué Áureo" y "Cruzar el umbral"): pendientes de aprobación.
-- **Obra**: títulos y fotos son de referencia; Paisaje, Moda, Eventos y Producto aún no tienen fotos.
-- Los textos de marca (eslogan, frase secundaria, declaración) están aprobados: no cambiarlos sin consultar.
-- Al desplegar, el servidor debe redirigir todas las rutas a `index.html`.
+- **Photos**: the ones in `public/photos/` are provisional moodboard images, not the studio's own photographs.
+- **Logo**: `ÁUREO` in Bricolage is a provisional typographic logotype; the logo will be designed later.
+- **Contact**: the studio's email, WhatsApp and Instagram are still to be defined (`channels` in
+  `src/content/studio.ts`).
+- **Form**: submission is simulated; it still needs a service that receives the messages.
+- **Proposed texts** on the Studio page ("Por qué Áureo" and "Cruzar el umbral"): pending approval.
+- **Work**: titles and photos are references; Paisaje, Moda, Eventos and Producto have no photos yet.
+- Brand copy (slogan, secondary phrase, statement) is approved: do not change it without asking.

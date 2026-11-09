@@ -1,4 +1,4 @@
-name: Despliegue en GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -10,28 +10,28 @@ permissions:
   pages: write
   id-token: write
 
-# Un solo despliegue a la vez; si llega otro merge, el que está en curso termina.
+# One deployment at a time; if another merge arrives, the running one finishes first.
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
   build:
-    name: Compilar
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
 
-      # Toma la versión de "packageManager" en package.json (pnpm 11.10.0).
+      # Uses the "packageManager" version from package.json (pnpm 11.10.0).
       - uses: pnpm/action-setup@v6
 
-      # Toma la versión de .nvmrc (Node 24).
+      # Uses the version from .nvmrc (Node 24).
       - uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
 
-      # Da la ruta base del sitio: "/<repositorio>" o "" si hay dominio propio.
+      # Provides the site base path: "/<repository>" or "" with a custom domain.
       - id: pages
         uses: actions/configure-pages@v6
 
@@ -43,8 +43,8 @@ jobs:
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}/
 
-      # GitHub Pages no conoce las rutas del navegador: 404.html sirve la app
-      # cuando se abre directamente una ruta como /obra o /cotizar.
+      # GitHub Pages does not know the client-side routes: 404.html serves the app
+      # when a route such as /obra or /cotizar is opened directly.
       - run: cp dist/index.html dist/404.html
 
       - uses: actions/upload-pages-artifact@v5
@@ -52,7 +52,7 @@ jobs:
           path: dist
 
   deploy:
-    name: Desplegar
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
     environment:
