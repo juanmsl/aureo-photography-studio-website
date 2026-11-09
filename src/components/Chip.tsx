@@ -2,22 +2,22 @@ import type { ButtonHTMLAttributes } from 'react';
 
 import { cn } from 'polpo/helpers';
 
-type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & { activo?: boolean };
+type ChipProps = ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean };
 
 /**
- * Chip de Áureo (Inactivo: contorno línea fuerte; Activo: relleno ámbar).
- * Polpo no trae un chip seleccionable con este aspecto; es un botón nativo con aria-pressed.
+ * Áureo chip (Inactive: strong-line outline; Active: amber fill).
+ * Polpo has no selectable chip with this look; it is a native button with aria-pressed.
  */
-export const Chip = ({ activo, className, children, ...props }: ChipProps) => (
+export const Chip = ({ active, className, children, ...props }: ChipProps) => (
   <button
     type='button'
-    aria-pressed={activo}
+    aria-pressed={active}
     {...props}
     className={cn(
       't-label cursor-pointer rounded-full border px-4.5 py-2.5 font-medium transition-colors duration-200',
-      activo
-        ? 'border-acento bg-acento text-fondo'
-        : 'border-linea-fuerte bg-transparent text-texto-suave hover:border-texto-suave hover:text-texto-fuerte',
+      active
+        ? 'border-accent bg-accent text-ground'
+        : 'border-line-strong bg-transparent text-fg-muted hover:border-fg-muted hover:text-fg-strong',
       className,
     )}
   >

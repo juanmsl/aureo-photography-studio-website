@@ -4,8 +4,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   /*
-   * Ruta base del sitio. En GitHub Pages la define el workflow de despliegue
-   * (p. ej. "/nombre-del-repo/"); en local es la raíz.
+   * Site base path. On GitHub Pages the deploy workflow sets it
+   * (e.g. "/repo-name/"); locally it is the root.
    */
   base: process.env.BASE_PATH || '/',
   plugins: [react(), tailwindcss()],

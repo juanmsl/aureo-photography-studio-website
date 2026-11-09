@@ -1,18 +1,18 @@
 import { useEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 
-import { Metadatos } from './components/Metadatos';
-import { Contacto } from './pages/Contacto';
-import { Disciplinas } from './pages/Disciplinas';
-import { Estudio } from './pages/Estudio';
-import { Inicio } from './pages/Inicio';
-import { MensajeEnviado } from './pages/MensajeEnviado';
-import { Obra } from './pages/Obra';
-import { ObraFoto } from './pages/ObraFoto';
-import { Pendiente } from './pages/Pendiente';
+import { PageMeta } from './components/PageMeta';
+import { ContactPage } from './pages/ContactPage';
+import { DisciplinesPage } from './pages/DisciplinesPage';
+import { HomePage } from './pages/HomePage';
+import { MessageSentPage } from './pages/MessageSentPage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { StudioPage } from './pages/StudioPage';
+import { WorkPage } from './pages/WorkPage';
+import { WorkPhotoPage } from './pages/WorkPhotoPage';
 
-/** Vuelve arriba al cambiar de página (no al filtrar ni al pasar fotos) y respeta las anclas. */
-const Desplazamiento = () => {
+/** Scrolls to the top on page change (not when filtering or paging through photos) and honors anchors. */
+const ScrollManager = () => {
   const { pathname, hash } = useLocation();
   useEffect(() => {
     if (hash) document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView();
@@ -24,17 +24,17 @@ const Desplazamiento = () => {
 
 export const App = () => (
   <>
-    <Desplazamiento />
-    <Metadatos />
+    <ScrollManager />
+    <PageMeta />
     <Routes>
-      <Route path='/' element={<Inicio />} />
-      <Route path='/obra' element={<Obra />} />
-      <Route path='/obra/:slug' element={<ObraFoto />} />
-      <Route path='/estudio' element={<Estudio />} />
-      <Route path='/disciplinas' element={<Disciplinas />} />
-      <Route path='/contacto' element={<Contacto />} />
-      <Route path='/contacto/enviado' element={<MensajeEnviado />} />
-      <Route path='*' element={<Pendiente />} />
+      <Route path='/' element={<HomePage />} />
+      <Route path='/obra' element={<WorkPage />} />
+      <Route path='/obra/:slug' element={<WorkPhotoPage />} />
+      <Route path='/estudio' element={<StudioPage />} />
+      <Route path='/disciplinas' element={<DisciplinesPage />} />
+      <Route path='/contacto' element={<ContactPage />} />
+      <Route path='/contacto/enviado' element={<MessageSentPage />} />
+      <Route path='*' element={<NotFoundPage />} />
     </Routes>
   </>
 );
