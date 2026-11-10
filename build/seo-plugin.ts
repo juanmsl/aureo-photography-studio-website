@@ -60,7 +60,7 @@ export const renderHead = (html: string, pathname: string, meta: RouteMeta) => {
   return jsonLd ? out.replace('</head>', `    ${jsonLd}\n  </head>`) : out;
 };
 
-/** File that GitHub Pages serves for a route without redirecting it ("/obra" → obra.html). */
+/** File Vercel serves for a route with `cleanUrls` ("/obra" → obra.html), without a redirect. */
 const fileFor = (route: string) => (route === '/' ? 'index.html' : `${route.slice(1)}.html`);
 
 const sitemap = (routes: Array<string>) =>
@@ -73,9 +73,9 @@ ${routes.map(r => `  <url>\n    <loc>${absoluteUrl(r)}</loc>\n  </url>`).join('\
 /**
  * Build-time SEO: every indexable route gets its own HTML file with its title,
  * description, canonical, Open Graph tags and JSON-LD, so crawlers that do not
- * run JavaScript (and link previews) see the right data, and GitHub Pages
- * answers 200 instead of falling back to 404.html. It also writes 404.html
- * (noindex) and sitemap.xml.
+ * run JavaScript (and link previews) see the right data. It also writes
+ * 404.html (noindex), which vercel.json uses as the app shell for the
+ * non-indexable routes, and sitemap.xml.
  */
 export const seoPlugin = (): Plugin => ({
   name: 'aureo-seo',

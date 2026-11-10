@@ -23,25 +23,31 @@ pnpm lint:fix  # ESLint with automatic fixes
 pnpm preview   # serve dist/
 ```
 
-## Deployment
+## Deployment (Vercel)
 
-Every push to `main` (for example, merging a PR) publishes the site to GitHub Pages through
-`.github/workflows/deploy.yml`: it installs with pnpm, runs `pnpm lint`, builds and uploads `dist/`. It can also be
-run manually from the **Actions** tab (Run workflow).
+The site is deployed on Vercel from the GitHub repository. `vercel.json` holds the whole configuration:
 
-- Once: in the repository, **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-- URL: **https://aureostudio.co** (custom domain). One-time setup:
-  - **Settings → Pages → Custom domain:** `aureostudio.co` and, once DNS resolves, **Enforce HTTPS**.
-  - DNS: **A** records for `aureostudio.co` to `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and
-    `185.199.111.153` (optionally **AAAA** to `2606:50c0:8000::153` … `2606:50c0:8003::153`) and a **CNAME** from
-    `www` to `juanmsl.github.io`.
-  - No `CNAME` file is needed: with Actions deployments GitHub ignores it and stores the domain in Settings.
-  - After setting the domain, redeploy (Actions → Run workflow) so the site is built for the root path.
-- The base path comes from `actions/configure-pages`: `/` with a custom domain, `/<repository>/` without one.
-  `vite.config.ts` reads it from `BASE_PATH` (`/` locally), the router uses `import.meta.env.BASE_URL` as its
-  `basename`, and photos in `public/` are requested with the same base.
-- GitHub Pages does not know the app's routes, so the workflow copies `index.html` to `404.html` and direct links
-  (e.g. `aureostudio.co/obra`) still open.
+- **Build:** `pnpm install --frozen-lockfile`, then `pnpm lint && pnpm build`; output in `dist/`.
+- **Clean URLs:** `obra.html` is served at `/obra`, with no trailing slash.
+- **Routes without their own HTML** (single photos `/obra/:slug` and "Mensaje enviado") are rewritten to `404.html`,
+  which loads the app with `noindex`. Any other unknown URL gets that same page with a real 404 status.
+- **Cache:** hashed files in `/assets` are cached for a year; `sw.js` is always revalidated so the PWA updates.
+- ESLint ignores `.vercel` (Corepack downloads pnpm into `.vercel/cache` during the build).
+
+Every push to `main` deploys to production, and every PR gets its own preview URL (Vercel marks previews
+`noindex`).
+
+### One-time setup
+
+1. In Vercel: **Add New → Project → Import** `juanmsl/aureo-photography-studio-website`. Vercel reads `vercel.json`,
+   so the build settings need no changes.
+2. **Settings → Environment Variables:** `ENABLE_EXPERIMENTAL_COREPACK` = `1` (all environments). With it Vercel uses
+   the pnpm version from `packageManager` (11.10.0); without it, it picks an older pnpm and the install fails because
+   of `engines`. Node comes from `engines` (24.x).
+3. **Settings → Domains:** add `aureostudio.co` and `www.aureostudio.co` (redirect `www` to the apex). Vercel shows
+   the DNS records to use: replace the GitHub Pages `A` records and the `www` CNAME at the DNS provider with them.
+   Keep the `google-site-verification` TXT record if Search Console is already set up.
+4. In GitHub: **Settings → Pages → Source: None** (or unpublish) so GitHub Pages stops serving the old copy.
 
 ## Loader and page transitions
 
@@ -77,8 +83,8 @@ service worker only runs in `pnpm build` + `pnpm preview` or in production, not 
   route, built only from approved copy. It is the single source: `PageMeta` applies it while navigating, and the
   build writes it into the HTML.
 - `build/seo-plugin.ts` (Vite plugin): writes one HTML file per indexable route (`obra.html`, `estudio.html`…) with
-  its own head, plus `404.html` (`noindex`) and `sitemap.xml`. GitHub Pages then answers 200 with the right tags for
-  every page, even for crawlers and link previews that do not run JavaScript.
+  its own head, plus `404.html` (`noindex`) and `sitemap.xml`. Every page then answers 200 with the right tags, even
+  for crawlers and link previews that do not run JavaScript.
 - Not indexed (`noindex, follow`, out of the sitemap): single photos (`/obra/:slug`), "Mensaje enviado" and the
   404 page.
 - `public/og.jpg` (1200×630) is made from a provisional moodboard photo; replace it once there are own photos and a
@@ -110,15 +116,15 @@ Grotesque ExtraBold, Instrument Serif italic (`serif-voice`, `t-quote`, `t-subti
 
 Every screen in the design is built, for desktop and mobile. Routes stay in Spanish because visitors see them:
 
-| Route | Page |
-| --- | --- |
-| `/` | Home |
-| `/obra` | Work, with a discipline filter (`?disciplina=retrato`) and "Cargar más fotografías" |
-| `/obra/:slug` | Work photo (arrow keys to move between photos, Esc to close) |
-| `/estudio` | Studio |
-| `/disciplinas` | Disciplines (anchors `#naturaleza`, `#retrato`…) |
-| `/contacto` | Contact (form) |
-| `/contacto/enviado` | Message sent |
+| Route               | Page                                                                                |
+| ------------------- | ----------------------------------------------------------------------------------- |
+| `/`                 | Home                                                                                |
+| `/obra`             | Work, with a discipline filter (`?disciplina=retrato`) and "Cargar más fotografías" |
+| `/obra/:slug`       | Work photo (arrow keys to move between photos, Esc to close)                        |
+| `/estudio`          | Studio                                                                              |
+| `/disciplinas`      | Disciplines (anchors `#naturaleza`, `#retrato`…)                                    |
+| `/contacto`         | Contact (form)                                                                      |
+| `/contacto/enviado` | Message sent                                                                        |
 
 ## Pending before launch
 

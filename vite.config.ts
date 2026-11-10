@@ -6,11 +6,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 import { seoPlugin } from './build/seo-plugin';
 
 export default defineConfig({
-  /*
-   * Site base path. On GitHub Pages the deploy workflow sets it
-   * (e.g. "/repo-name/"); locally it is the root.
-   */
-  base: process.env.BASE_PATH || '/',
+  // Served from the domain root on Vercel (see vercel.json).
+  base: '/',
   plugins: [
     react(),
     tailwindcss(),

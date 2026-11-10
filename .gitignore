@@ -25,3 +25,6 @@ dist-ssr
 
 # Capturas de revisión de impeccable (pesadas, regenerables)
 .impeccable/review/
+
+# Vercel (local link and build cache)
+.vercel
