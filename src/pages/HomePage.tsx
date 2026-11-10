@@ -38,7 +38,7 @@ const Hero = () => {
           Estudio fotográfico de naturaleza, paisaje, retrato, moda, arquitectura, interiores, eventos y producto.
         </Typography>
         <div className='mt-2 md:mt-10'>
-          <Button color='primary' radius='full' onClick={() => navigate('/obra')}>
+          <Button color='primary' radius='full' onClick={() => navigate('/obra', { viewTransition: true })}>
             Ver la obra
           </Button>
         </div>
@@ -97,14 +97,14 @@ const WorkPage = () => {
 
       <div className='mt-10 grid gap-10 md:mt-19 md:grid-cols-[560fr_624fr] md:gap-16'>
         <figure className='m-0'>
-          <Link to={`/obra/${tall.slug}`} aria-label={`${tall.title}, ver ampliada`} className='block'>
+          <Link viewTransition to={`/obra/${tall.slug}`} aria-label={`${tall.title}, ver ampliada`} className='block'>
             <LitPhoto id={tall.photo} className='aspect-[560/760] w-full' />
           </Link>
           <PhotoCaption title={tall.title} discipline={tall.discipline} />
         </figure>
         <div className='grid content-start gap-10 md:gap-0'>
           <figure className='m-0'>
-            <Link to={`/obra/${wide.slug}`} aria-label={`${wide.title}, ver ampliada`} className='block'>
+            <Link viewTransition to={`/obra/${wide.slug}`} aria-label={`${wide.title}, ver ampliada`} className='block'>
               <LitPhoto id={wide.photo} className='aspect-[624/380] w-full' />
             </Link>
             <PhotoCaption title={wide.title} discipline={wide.discipline} />
@@ -115,7 +115,7 @@ const WorkPage = () => {
               { ...pairRight, ratio: 'aspect-[280/400]' },
             ].map(o => (
               <figure key={o.title} className='m-0'>
-                <Link to={`/obra/${o.slug}`} aria-label={`${o.title}, ver ampliada`} className='block'>
+                <Link viewTransition to={`/obra/${o.slug}`} aria-label={`${o.title}, ver ampliada`} className='block'>
                   <LitPhoto id={o.photo} falloff={0.45} className={`${o.ratio} w-full`} />
                 </Link>
                 <PhotoCaption title={o.title} discipline={o.discipline} />
@@ -161,6 +161,7 @@ const DisciplinesPage = () => {
             return (
               <li key={d.slug} className='border-t border-line'>
                 <Link
+                  viewTransition
                   to={`/disciplinas#${d.slug}`}
                   onMouseEnter={() => setActiveSlug(d.slug)}
                   onFocus={() => setActiveSlug(d.slug)}

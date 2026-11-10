@@ -38,6 +38,7 @@ export const DisciplinesPage = () => (
                     </Typography>
                     {hasWork && (
                       <Link
+                        viewTransition
                         to={`/obra?disciplina=${d.slug}`}
                         className='t-label self-start font-medium text-accent underline decoration-1 underline-offset-[0.4em] hover:text-fg-strong'
                       >

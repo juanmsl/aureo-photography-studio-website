@@ -26,7 +26,7 @@ export const MessageSentPage = () => {
           Te escribiremos al correo que nos dejaste para conversar sobre tu proyecto.
         </Typography>
         <div className='mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4'>
-          <Button color='primary' radius='full' onClick={() => navigate('/obra')}>
+          <Button color='primary' radius='full' onClick={() => navigate('/obra', { viewTransition: true })}>
             Ver la obra
           </Button>
           <Button
@@ -34,7 +34,7 @@ export const MessageSentPage = () => {
             variant='outlined'
             radius='full'
             className='border-fg-muted hover:border-accent hover:text-fg-strong'
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/', { viewTransition: true })}
           >
             Volver al inicio
           </Button>

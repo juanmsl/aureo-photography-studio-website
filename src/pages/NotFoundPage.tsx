@@ -19,7 +19,7 @@ export const NotFoundPage = ({ title }: { title?: string }) => {
         <Typography noPadding className='serif-voice m-0 max-w-[32rem] t-subtitle text-fg-muted'>
           {title ? 'Esta página todavía se está construyendo.' : 'Puede que el enlace haya cambiado.'}
         </Typography>
-        <Button color='primary' radius='full' onClick={() => navigate('/')}>
+        <Button color='primary' radius='full' onClick={() => navigate('/', { viewTransition: true })}>
           Volver al inicio
         </Button>
       </main>

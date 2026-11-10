@@ -39,6 +39,7 @@ const WorkItem = ({ o, i, query }: { o: Work; i: number; query: string }) => {
       )}
     >
       <Link
+        viewTransition
         to={`/obra/${o.slug}${query}`}
         className='group block'
         aria-label={`${o.title}, ${disciplineName(o.discipline)}. Ver ampliada`}

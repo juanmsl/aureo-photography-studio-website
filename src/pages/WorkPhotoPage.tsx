@@ -23,7 +23,7 @@ export const WorkPhotoPage = () => {
     if (i < 0) return;
 
     const next = list[(i + step + list.length) % list.length];
-    navigate(`/obra/${next.slug}${query}`, { replace: true });
+    navigate(`/obra/${next.slug}${query}`, { replace: true, viewTransition: true });
   };
 
   useEventListener('keydown', (e: KeyboardEvent) => {
@@ -31,7 +31,7 @@ export const WorkPhotoPage = () => {
 
     if (e.key === 'ArrowRight') goTo(1);
 
-    if (e.key === 'Escape') navigate(`/obra${query}`);
+    if (e.key === 'Escape') navigate(`/obra${query}`, { viewTransition: true });
   });
 
   if (i < 0) return <NotFoundPage />;
@@ -51,7 +51,7 @@ export const WorkPhotoPage = () => {
         <Typography variant='small' noPadding className='m-0 text-fg-muted' aria-live='polite'>
           {i + 1} de {list.length}
         </Typography>
-        <Link to={`/obra${query}`} className='t-label font-medium text-fg-muted hover:text-fg-strong'>
+        <Link viewTransition to={`/obra${query}`} className='t-label font-medium text-fg-muted hover:text-fg-strong'>
           Cerrar
         </Link>
       </div>
@@ -80,7 +80,7 @@ export const WorkPhotoPage = () => {
               variant='outlined'
               radius='full'
               className='border-fg-muted hover:border-accent hover:text-fg-strong'
-              onClick={() => navigate('/contacto')}
+              onClick={() => navigate('/contacto', { viewTransition: true })}
             >
               Agenda una conversación
             </Button>
