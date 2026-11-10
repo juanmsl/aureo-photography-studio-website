@@ -3,7 +3,7 @@
  * (slogan, secondary phrase and statement). Do not change it without asking.
  */
 
-/** Public site domain (GitHub Pages with a custom domain). */
+/** Public site domain (Vercel with a custom domain). */
 export const SITE_URL = 'https://aureostudio.co';
 
 export const brand = {
