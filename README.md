@@ -57,12 +57,19 @@ run manually from the **Actions** tab (Run workflow).
 
 ## Search engines and link previews
 
-- `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, made from a
-  provisional moodboard photo; replace it once there are own photos and a logo).
-- `src/components/PageMeta.tsx`: title, description and canonical URL for each route; `noindex` on "Mensaje
-  enviado" and the 404 page.
-- `public/robots.txt` and `public/sitemap.xml` (main routes). If the domain changes, update both files,
-  `index.html` and `SITE_URL` in `src/content/studio.ts`.
+- `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
+  route, built only from approved copy. It is the single source: `PageMeta` applies it while navigating, and the
+  build writes it into the HTML.
+- `build/seo-plugin.ts` (Vite plugin): writes one HTML file per indexable route (`obra.html`, `estudio.html`…) with
+  its own head, plus `404.html` (`noindex`) and `sitemap.xml`. GitHub Pages then answers 200 with the right tags for
+  every page, even for crawlers and link previews that do not run JavaScript.
+- Not indexed (`noindex, follow`, out of the sitemap): single photos (`/obra/:slug`), "Mensaje enviado" and the
+  404 page.
+- `public/og.jpg` (1200×630) is made from a provisional moodboard photo; replace it once there are own photos and a
+  logo. `public/robots.txt` points to the sitemap. If the domain changes, update `SITE_URL` in
+  `src/content/studio.ts`, `index.html` and `robots.txt`.
+
+Search Console setup and next steps: `docs/SEO.md`.
 
 ## Structure
 
@@ -73,7 +80,7 @@ src/
   pages/               HomePage, WorkPage, WorkPhotoPage, StudioPage, DisciplinesPage, ContactPage, MessageSentPage, NotFoundPage
   index.css            Polpo theme with the "Áureo · Tema" collection
 .claude/skills/polpo   Polpo instructions for agents
-docs/                  CONTEXT.md (brand decisions, in Spanish) and PRODUCT.md (product context)
+docs/                  CONTEXT.md (brand decisions, in Spanish), PRODUCT.md (product context) and SEO.md
 ```
 
 ## Theme

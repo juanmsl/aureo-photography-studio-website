@@ -1,65 +1,7 @@
 import { useEffect } from 'react';
-import { matchPath, useLocation } from 'react-router';
+import { useLocation } from 'react-router';
 
-import { statement, brand, works, SITE_URL } from '../content/studio';
-
-type Meta = { title: string; description: string; indexable: boolean };
-
-const SUFFIX = 'Áureo Estudio Fotográfico';
-
-const metaFor = (pathname: string): Meta => {
-  const workMatch = matchPath('/obra/:slug', pathname);
-
-  if (pathname === '/') {
-    return {
-      title: 'Áureo · Estudio Fotográfico',
-      description: `${brand.slogan} ${brand.secondaryPhrase}`,
-      indexable: true,
-    };
-  }
-
-  if (pathname === '/obra') {
-    return {
-      title: `Obra · ${SUFFIX}`,
-      description: 'Fotografías de distintas disciplinas, cada una con su propia luz.',
-      indexable: true,
-    };
-  }
-
-  if (workMatch) {
-    const o = works.find(x => x.slug === workMatch.params.slug);
-
-    return o
-      ? { title: `${o.title} · Obra · ${SUFFIX}`, description: 'Fotografía de la obra de Áureo.', indexable: true }
-      : { title: `Página no encontrada · ${SUFFIX}`, description: brand.slogan, indexable: false };
-  }
-
-  if (pathname === '/estudio') {
-    return { title: `Estudio · ${SUFFIX}`, description: statement.opening, indexable: true };
-  }
-
-  if (pathname === '/disciplinas') {
-    return {
-      title: `Disciplinas · ${SUFFIX}`,
-      description: `${brand.secondaryPhrase} Una misma forma de mirar, llevada a cada encargo.`,
-      indexable: true,
-    };
-  }
-
-  if (pathname === '/contacto') {
-    return {
-      title: `Agenda una conversación · ${SUFFIX}`,
-      description: 'Cuéntanos qué quieres fotografiar.',
-      indexable: true,
-    };
-  }
-
-  if (pathname === '/contacto/enviado') {
-    return { title: `Mensaje enviado · ${SUFFIX}`, description: brand.slogan, indexable: false };
-  }
-
-  return { title: `Página no encontrada · ${SUFFIX}`, description: brand.slogan, indexable: false };
-};
+import { absoluteUrl, metaFor } from '../seo';
 
 const setHeadTag = (selector: string, create: () => HTMLElement, attribute: string, value: string | null) => {
   let el = document.head.querySelector<HTMLElement>(selector);
@@ -78,26 +20,54 @@ const setHeadTag = (selector: string, create: () => HTMLElement, attribute: stri
   el.setAttribute(attribute, value);
 };
 
+const meta = (key: 'name' | 'property', value: string) => () => {
+  const el = document.createElement('meta');
+
+  el.setAttribute(key, value);
+
+  return el;
+};
+
 /**
- * Title, description, canonical URL (aureostudio.co) and robots for each route.
- * index.html carries the home defaults and the link-sharing tags.
+ * Keeps the head in sync while navigating inside the app: title, description,
+ * robots, canonical, Open Graph and JSON-LD. The same data (src/seo.ts) is
+ * written into each route's HTML file at build time.
  */
 export const PageMeta = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const { title, description, indexable } = metaFor(pathname);
-    const meta = (name: string) => () => Object.assign(document.createElement('meta'), { name });
+    const m = metaFor(pathname);
 
-    document.title = title;
-    setHeadTag('meta[name="description"]', meta('description'), 'content', description);
+    document.title = m.title;
+    setHeadTag('meta[name="description"]', meta('name', 'description'), 'content', m.description);
+    setHeadTag(
+      'meta[name="robots"]',
+      meta('name', 'robots'),
+      'content',
+      m.indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow',
+    );
     setHeadTag(
       'link[rel="canonical"]',
       () => Object.assign(document.createElement('link'), { rel: 'canonical' }),
       'href',
-      indexable ? `${SITE_URL}${pathname === '/' ? '/' : pathname}` : null,
+      m.indexable ? absoluteUrl(pathname) : null,
     );
-    setHeadTag('meta[name="robots"]', meta('robots'), 'content', indexable ? null : 'noindex');
+    setHeadTag('meta[property="og:url"]', meta('property', 'og:url'), 'content', absoluteUrl(pathname));
+    setHeadTag('meta[property="og:title"]', meta('property', 'og:title'), 'content', m.title);
+    setHeadTag('meta[property="og:description"]', meta('property', 'og:description'), 'content', m.description);
+    setHeadTag('meta[property="og:image"]', meta('property', 'og:image'), 'content', m.image);
+    setHeadTag('meta[property="og:image:alt"]', meta('property', 'og:image:alt'), 'content', m.imageAlt);
+
+    document.head.querySelectorAll('script[type="application/ld+json"]').forEach(el => el.remove());
+
+    for (const data of m.jsonLd) {
+      const script = document.createElement('script');
+
+      script.type = 'application/ld+json';
+      script.text = JSON.stringify(data);
+      document.head.appendChild(script);
+    }
   }, [pathname]);
 
   return null;

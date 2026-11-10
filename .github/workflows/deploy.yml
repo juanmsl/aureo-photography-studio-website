@@ -43,9 +43,9 @@ jobs:
         env:
           BASE_PATH: ${{ steps.pages.outputs.base_path }}/
 
-      # GitHub Pages does not know the client-side routes: 404.html serves the app
-      # when a route such as /obra or /cotizar is opened directly.
-      - run: cp dist/index.html dist/404.html
+      # The build already writes one HTML file per indexable route and 404.html
+      # (noindex), which serves the app for the remaining routes such as the
+      # single photos (see build/seo-plugin.ts).
 
       - uses: actions/upload-pages-artifact@v5
         with:
