@@ -19,6 +19,7 @@ type TextLinkProps = {
  */
 export const TextLink = ({ a, children, action, active, className, onClick }: TextLinkProps) => (
   <Link
+    viewTransition
     to={a}
     onClick={onClick}
     aria-current={active ? 'page' : undefined}

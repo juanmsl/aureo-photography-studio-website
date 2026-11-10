@@ -43,6 +43,18 @@ run manually from the **Actions** tab (Run workflow).
 - GitHub Pages does not know the app's routes, so the workflow copies `index.html` to `404.html` and direct links
   (e.g. `aureostudio.co/obra`) still open.
 
+## Loader and page transitions
+
+- **Initial loader:** `#splash` in `index.html` (inline CSS, so it shows before the JS arrives): a slit of amber
+  light, like a door left ajar, with the glow it casts on the floor, breathing on the shadow background. It has no
+  logo on purpose (the logo is not designed yet). `src/splash.ts` fades it out once the fonts and the first images are
+  ready (3 s at most) and removes it.
+- **Transitions between pages:** the router is a data router (`createBrowserRouter` in `src/App.tsx`) so `Link` and
+  `navigate` can use `viewTransition`. The animation lives in `src/index.css` (`::view-transition-*`): the old page
+  dims out, the new one emerges from the dark, and the header stays still. Browsers without the View Transitions API
+  change the page without animation. Every new link or `navigate` call should pass `viewTransition`.
+- Both respect `prefers-reduced-motion`.
+
 ## Search engines and link previews
 
 - `index.html`: description, canonical URL and Open Graph / X tags with `public/og.jpg` (1200×630, made from a

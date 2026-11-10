@@ -42,7 +42,7 @@ export const ContactPage = () => {
     await new Promise(r => {
       setTimeout(r, 600);
     });
-    navigate('/contacto/enviado', { state: data });
+    navigate('/contacto/enviado', { state: data, viewTransition: true });
   });
 
   return (

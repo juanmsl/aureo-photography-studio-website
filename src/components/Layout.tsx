@@ -13,6 +13,7 @@ const YEAR = new Date().getFullYear();
 /** PROVISIONAL typographic logotype: Áureo's logo has not been designed yet. */
 export const Logotype = ({ onClick, className }: { onClick?: () => void; className?: string }) => (
   <Link
+    viewTransition
     to='/'
     onClick={onClick}
     aria-label='Áureo, inicio'
@@ -30,7 +31,7 @@ export const Navigation = ({ className }: { className?: string }) => {
   const close = () => setOpen(false);
 
   return (
-    <header className={cn('relative z-20 px-5 pt-4 md:px-24 md:pt-10', className)}>
+    <header className={cn('site-header relative z-20 px-5 pt-4 md:px-24 md:pt-10', className)}>
       <nav aria-label='Principal' className='flex min-h-11 items-center justify-between'>
         <Logotype />
         <ul className='m-0 hidden list-none items-center gap-10 p-0 lg:flex'>
@@ -86,6 +87,7 @@ export const Navigation = ({ className }: { className?: string }) => {
             {navigation.map(e => (
               <li key={e.a}>
                 <Link
+                  viewTransition
                   to={e.a}
                   onClick={close}
                   className='font-title text-[2.75rem] leading-none font-extrabold tracking-[-0.03em] text-fg'
@@ -102,7 +104,7 @@ export const Navigation = ({ className }: { className?: string }) => {
             className='mt-auto'
             onClick={() => {
               close();
-              navigate('/contacto');
+              navigate('/contacto', { viewTransition: true });
             }}
           >
             Agenda una conversación
@@ -158,7 +160,7 @@ export const ConversationCta = () => {
           Cuéntanos qué quieres fotografiar y encontremos juntos la mejor manera de mirarlo.
         </Typography>
         <div className='mt-4 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4'>
-          <Button color='primary' radius='full' onClick={() => navigate('/contacto')}>
+          <Button color='primary' radius='full' onClick={() => navigate('/contacto', { viewTransition: true })}>
             Agenda una conversación
           </Button>
           <Button
@@ -166,7 +168,7 @@ export const ConversationCta = () => {
             variant='outlined'
             radius='full'
             className='border-fg-muted hover:border-accent hover:text-fg-strong'
-            onClick={() => navigate('/contacto')}
+            onClick={() => navigate('/contacto', { viewTransition: true })}
           >
             Escríbenos
           </Button>
