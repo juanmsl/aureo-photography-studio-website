@@ -1,5 +1,7 @@
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { useLayoutEffect } from 'react';
-import { createBrowserRouter, Outlet, useLocation } from 'react-router';
+import { createBrowserRouter, Outlet, useLocation, useParams } from 'react-router';
 
 import { PageMeta } from './components/PageMeta';
 import { ContactPage } from './pages/ContactPage';
@@ -23,14 +25,34 @@ const ScrollManager = () => {
   return null;
 };
 
-/** Shell shared by every page. */
-const AppLayout = () => (
-  <>
-    <ScrollManager />
-    <PageMeta />
-    <Outlet />
-  </>
-);
+/**
+ * Route pattern of the current page (for example "/proyectos/:slug"), so Speed
+ * Insights groups every project or photo under one route.
+ */
+const useRoutePattern = () => {
+  const { pathname } = useLocation();
+  const params = useParams();
+
+  return Object.entries(params).reduce(
+    (route, [name, value]) => (value && name !== '*' ? route.replace(`/${value}`, `/:${name}`) : route),
+    pathname,
+  );
+};
+
+/** Shell shared by every page. Vercel Web Analytics and Speed Insights only send data in production on Vercel. */
+const AppLayout = () => {
+  const route = useRoutePattern();
+
+  return (
+    <>
+      <ScrollManager />
+      <PageMeta />
+      <Outlet />
+      <Analytics />
+      <SpeedInsights route={route} />
+    </>
+  );
+};
 
 /*
  * Data router: required for `viewTransition` on Link and navigate, which
