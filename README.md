@@ -77,6 +77,15 @@ Every push to `main` deploys to production, and every PR gets its own preview UR
 On Android (Chrome) the browser offers "Instalar app"; on iPhone, Safari → Compartir → "Agregar a inicio". The
 service worker only runs in `pnpm build` + `pnpm preview` or in production, not in `pnpm dev`.
 
+## Analytics
+
+`@vercel/analytics` (Web Analytics: visits and page views, without cookies) and `@vercel/speed-insights` (Core Web
+Vitals from real visitors) are rendered once in `AppLayout` (`src/App.tsx`). Speed Insights receives the route
+pattern (for example `/obra/:slug`) so dynamic pages are grouped. They only send data from a Vercel deployment:
+locally the `/_vercel/*` scripts answer 404, which is expected.
+
+One-time setup in Vercel: **Project → Analytics → Enable** and **Project → Speed Insights → Enable**.
+
 ## Search engines and link previews
 
 - `src/seo.ts`: title, description, robots, canonical, link-preview image and structured data (JSON-LD) for every
