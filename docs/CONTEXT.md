@@ -221,7 +221,7 @@ Evitar:
 
 ## 8. Dirección visual preliminar (todavía no es un diseño aprobado)
 
-**Actualización (noviembre 2026): el logo ya está diseñado y aprobado.** El símbolo es la «Á» dibujada como una puerta con luz que la atraviesa; el logotipo une el símbolo con «ureo» en letra manuscrita e incluye una cámara dibujada a una sola línea dentro de la luz de la puerta; hay además un ícono (símbolo blanco sobre ámbar) y una marca de agua (la cámara a una sola línea). Lo que sigue en esta sección se conserva como contexto de la exploración previa.
+**Actualización (noviembre 2026): el logo ya está diseñado y aprobado.** El símbolo es la «Á» dibujada como una puerta con luz que la atraviesa; el logotipo es una versión sencilla: los trazos de la «Á» seguidos de «ureo» en letra manuscrita, en ámbar y sin la luz de la puerta; hay además un ícono (símbolo blanco sobre ámbar) y una marca de agua (la cámara a una sola línea). Lo que sigue en esta sección se conserva como contexto de la exploración previa.
 
 Referencias conceptuales que podrían orientar el futuro diseño:
 - Un símbolo que sugiera el instante en que algo inadvertido se revela ante nuestros ojos.

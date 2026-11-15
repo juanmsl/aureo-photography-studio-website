@@ -29,7 +29,7 @@ It lives alongside Lina Nieto's personal portfolio, which is a separate project 
 ## Capabilities and Constraints
 
 - Disciplines: nature, landscape, macro photography, portrait, fashion, architecture, interiors, events and product. None of them should dominate the identity.
-- Logo approved (November 2026): symbol (the "Á" as a doorway with light coming through), logotype (symbol + "ureo" in script, with a single-line camera drawing inside the doorway light), icon (white symbol on amber) and watermark (single-line camera drawing). Files in `public/`; see README.
+- Logo approved (November 2026): symbol (the "Á" as a doorway with light coming through), logotype (the symbol's lines as the "Á" + "ureo" in script, in amber, without the doorway light), icon (white symbol on amber) and watermark (single-line camera drawing). Files in `public/`; see README.
 - The golden ratio may inspire the construction, but it is not mentioned in the brand and the spiral is not used as an obvious ornament.
 - Preliminary palette, not approved: ink black #171C20, petrol blue #234B55, emerald green #28564A, wine #642F43, ivory #F0E9DF.
 - Final typefaces and palette: pending.
