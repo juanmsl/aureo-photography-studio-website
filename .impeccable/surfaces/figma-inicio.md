@@ -10,7 +10,7 @@ related_targets: []
 Scope: home page of Áureo Estudio Fotográfico, designed in Figma (file AtRQGqGP7TBk8lSKPd3WOO). Mode: Persuade (inspire and open a conversation), with the work up front.
 Audience and action: people looking for photography with a point of view; see the work and book a conversation.
 Content: approved slogan and statement (docs/CONTEXT.md §6). Moodboard images as provisional. No invented clients, awards or contact details.
-Pending: logo («ÁUREO» is a provisional typographic logotype), relationship with Lina Nieto on the site, contact details.
+Logo approved (November 2026; see README). Pending: relationship with Lina Nieto on the site, contact details.
 
 ## Direction contract
 THESIS: The site is a camera obscura: a dim room where only what the light reaches can be seen. It rejects the full-screen photo hero with a centered logo and the grid of service cards.
