@@ -20,8 +20,8 @@ pending.
 Pages left out on purpose (`noindex, follow`): the single photos (`/obra/umbral`…; thin pages, and today they are
 moodboard references), "Mensaje enviado" and the 404 page.
 
-The structured data has no city, address, contact details, logo or founder: none of them is defined yet, and the
-brand rules say not to invent them.
+The structured data includes the logo (`pwa-512x512.png`). It has no city, address, contact details or founder:
+none of them is defined yet, and the brand rules say not to invent them.
 
 ## Google Search Console
 
@@ -44,8 +44,6 @@ https://www.bing.com/webmasters → **Import from Google Search Console**.
 
 - **Own photographs** instead of the moodboard references, with descriptive file names and specific `alt` texts.
   Then the single photos can become indexable (`/obra/:slug` in `src/seo.ts`) and a new `og.jpg` can be made.
-- **Logo**: once it exists, add it as `logo` in the `Organization` data of `src/seo.ts` (a square PNG of at least
-  112 px) and update the favicon.
 - **Contact details and profiles** (`channels` in `src/content/studio.ts`): when they are real, add the profiles to
   `sameAs` and the email or phone to `contactPoint` in the `Organization` data.
 - **Location**: if the studio defines its city or service area, add `areaServed` and `address` and create a Google

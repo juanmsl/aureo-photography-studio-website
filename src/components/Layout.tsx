@@ -6,20 +6,15 @@ import { Link, useLocation, useNavigate } from 'react-router';
 
 import { brand, navigation } from '../content/studio';
 
+import { Logotype } from './Brand';
 import { TextLink } from './TextLink';
 
 const YEAR = new Date().getFullYear();
 
-/** PROVISIONAL typographic logotype: Áureo's logo has not been designed yet. */
-export const Logotype = ({ onClick, className }: { onClick?: () => void; className?: string }) => (
-  <Link
-    viewTransition
-    to='/'
-    onClick={onClick}
-    aria-label='Áureo, inicio'
-    className={cn('font-title t-header4 leading-none font-extrabold tracking-[0.06em] text-fg', className)}
-  >
-    ÁUREO
+/** Áureo logotype linking to the home page. */
+export const HomeLogo = ({ onClick, className }: { onClick?: () => void; className?: string }) => (
+  <Link viewTransition to='/' onClick={onClick} aria-label='Áureo, inicio' className='inline-flex'>
+    <Logotype className={cn('h-16 w-auto md:h-[5.5rem]', className)} />
   </Link>
 );
 
@@ -33,7 +28,7 @@ export const Navigation = ({ className }: { className?: string }) => {
   return (
     <header className={cn('site-header relative z-20 px-5 pt-4 md:px-24 md:pt-10', className)}>
       <nav aria-label='Principal' className='flex min-h-11 items-center justify-between'>
-        <Logotype />
+        <HomeLogo />
         <ul className='m-0 hidden list-none items-center gap-10 p-0 lg:flex'>
           {navigation.map(e => (
             <li key={e.a}>
@@ -74,7 +69,7 @@ export const Navigation = ({ className }: { className?: string }) => {
             className='pointer-events-none absolute -bottom-24 left-1/2 h-[18.75rem] w-[26rem] -translate-x-1/2 rounded-full bg-accent/15 blur-[90px]'
           />
           <div className='flex min-h-11 items-center justify-between'>
-            <Logotype onClick={close} />
+            <HomeLogo onClick={close} />
             <button
               type='button'
               onClick={close}
@@ -120,8 +115,8 @@ export const Navigation = ({ className }: { className?: string }) => {
 
 export const Footer = () => (
   <footer className='flex flex-col gap-6 border-t border-line px-5 pt-10 pb-12 md:flex-row md:items-start md:justify-between md:px-24 md:pt-14 md:pb-16'>
-    <div className='grid gap-2.5'>
-      <Logotype />
+    <div className='grid justify-items-start gap-3'>
+      <HomeLogo className='h-24 md:h-28' />
       <span className='serif-voice t-subtitle text-fg-muted'>{brand.descriptor}</span>
     </div>
     <nav aria-label='Pie de página'>

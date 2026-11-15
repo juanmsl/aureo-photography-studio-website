@@ -5,8 +5,8 @@
  * which writes one HTML file per indexable route and the sitemap.
  *
  * Copy comes from the approved brand texts (docs/CONTEXT.md): slogan,
- * secondary phrase and statement. City, address, contact details and logo are
- * not defined yet, so they are left out of the structured data.
+ * secondary phrase and statement. City, address and contact details are not
+ * defined yet, so they are left out of the structured data.
  */
 import { brand, disciplineName, disciplines, SITE_URL, statement, works } from './content/studio';
 
@@ -25,7 +25,7 @@ export type RouteMeta = {
 const SITE_NAME = `${brand.name} ${brand.descriptor}`;
 const HOME_DESCRIPTION = `${SITE_NAME}. ${brand.slogan} Naturaleza, paisaje, retrato, moda, arquitectura, interiores, eventos y producto.`;
 const OG_IMAGE = `${SITE_URL}/og.jpg`;
-const OG_IMAGE_ALT = 'Puerta entreabierta con luz dorada y el eslogan de Áureo';
+const OG_IMAGE_ALT = 'Logo de Áureo y el eslogan junto a una puerta entreabierta con luz dorada';
 
 export const absoluteUrl = (pathname: string) => (pathname === '/' ? `${SITE_URL}/` : `${SITE_URL}${pathname}`);
 
@@ -36,6 +36,7 @@ const studio = {
   name: SITE_NAME,
   alternateName: brand.name,
   url: `${SITE_URL}/`,
+  logo: `${SITE_URL}/pwa-512x512.png`,
   slogan: brand.slogan,
   description: statement.opening,
   knowsAbout: ['Fotografía', ...disciplines.map(d => d.name)],

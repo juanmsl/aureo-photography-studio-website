@@ -5,7 +5,7 @@
 > **Objetivo:** conservar el proyecto existente del portafolio fotográfico personal de **Lina Nieto** y añadir, como proyecto complementario e independiente, el desarrollo de identidad de **Áureo Estudio Fotográfico**.
 >
 > **Idioma de trabajo:** español.
-> **Estado:** Áureo está en fase de estrategia e identidad verbal. Todavía no se ha definido ni diseñado su logo.
+> **Estado:** Áureo tiene declaración de marca aprobada y logo aprobado (noviembre 2026): símbolo, logotipo, ícono y marca de agua.
 
 ---
 
@@ -221,7 +221,7 @@ Evitar:
 
 ## 8. Dirección visual preliminar (todavía no es un diseño aprobado)
 
-**El logo aún no se ha diseñado.** El usuario pidió expresamente trabajar primero el nombre y el concepto, y pensar en el logo después.
+**Actualización (noviembre 2026): el logo ya está diseñado y aprobado.** El símbolo es la «Á» dibujada como una puerta con luz que la atraviesa; el logotipo une el símbolo con «ureo» en letra manuscrita e incluye una cámara dibujada a una sola línea dentro de la luz de la puerta; hay además un ícono (símbolo blanco sobre ámbar) y una marca de agua (la cámara a una sola línea). Lo que sigue en esta sección se conserva como contexto de la exploración previa.
 
 Referencias conceptuales que podrían orientar el futuro diseño:
 - Un símbolo que sugiera el instante en que algo inadvertido se revela ante nuestros ojos.
@@ -282,7 +282,7 @@ La dirección visual del portafolio de Lina Nieto y la de Áureo pueden dialogar
 
 - [x] Declaración de marca aprobada (versión combinada, noviembre 2026; ver sección 6 · Versión aprobada).
 - [ ] Definir la dirección estética exacta: equilibrio entre lo etéreo/misterioso y lo elegante/editorial.
-- [ ] Desarrollar conceptos de logo originales para Áureo.
+- [x] Logo de Áureo diseñado y aprobado (noviembre 2026).
 - [ ] Definir paleta cromática y tipografías definitivas.
 - [ ] Desarrollar el sistema de identidad completo y sus variantes.
 - [ ] Definir cómo se conectará Áureo con el sitio/portafolio de Lina Nieto.
