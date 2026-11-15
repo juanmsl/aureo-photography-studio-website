@@ -60,7 +60,7 @@ Approved brand marks (November 2026). Sources in `public/`, React components in 
 | Icon | `public/favicon.svg` | White symbol on an amber rounded square. Favicon and the PNG app icons. |
 | Watermark (`Watermark`) | `public/watermark.svg` | Single-line camera drawing, for the studio's own photographs (not used on the provisional moodboard photos). |
 
-Colors come from the theme: lines in `accent` (#E8A75B), doorway light in `fg-strong` (#F3DEC0). `mono` renders the
+Colors come from the theme: lines in `accent` (#E8A75B), the doorway in the same amber at 20 % opacity. `mono` renders the
 symbol or logotype in the text color. The original exports used a masked outside stroke; the clean files draw the
 same outline with a 4 px stroke, without the mask.
 

@@ -2,8 +2,8 @@ import { cn } from 'polpo/helpers';
 
 /*
  * Áureo brand marks, from the approved logo files (November 2026). Colors come
- * from the theme: the light of the doorway is `fg-strong` (#F3DEC0) and the
- * lines are `accent` (#E8A75B). With `mono` every part takes the text color.
+ * from the theme: the lines are `accent` (#E8A75B) and the doorway is the same
+ * amber at 20 % opacity. With `mono` every part takes the text color.
  */
 
 /** Doorway light (the arch's interior). */
@@ -43,7 +43,7 @@ const lineProps = (mono?: boolean) => ({
 });
 
 const doorProps = (mono?: boolean) =>
-  mono ? { fill: 'currentColor', fillOpacity: 0.28 } : { className: 'fill-fg-strong' };
+  mono ? { fill: 'currentColor', fillOpacity: 0.2 } : { className: 'fill-accent', fillOpacity: 0.2 };
 
 /** Symbol: the "Á" drawn as a doorway with light coming through. */
 export const Logo = ({ className, title, mono }: MarkProps) => (
