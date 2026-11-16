@@ -98,14 +98,14 @@ const WorkPage = () => {
       <div className='mt-10 grid gap-10 md:mt-19 md:grid-cols-[560fr_624fr] md:gap-16'>
         <figure className='m-0'>
           <Link viewTransition to={`/obra/${tall.slug}`} aria-label={`${tall.title}, ver ampliada`} className='block'>
-            <LitPhoto id={tall.photo} className='aspect-[560/760] w-full' />
+            <LitPhoto id={tall.photo} size='thumb' className='aspect-[560/760] w-full' />
           </Link>
           <PhotoCaption title={tall.title} discipline={tall.discipline} />
         </figure>
         <div className='grid content-start gap-10 md:gap-0'>
           <figure className='m-0'>
             <Link viewTransition to={`/obra/${wide.slug}`} aria-label={`${wide.title}, ver ampliada`} className='block'>
-              <LitPhoto id={wide.photo} className='aspect-[624/380] w-full' />
+              <LitPhoto id={wide.photo} size='thumb' className='aspect-[624/380] w-full' />
             </Link>
             <PhotoCaption title={wide.title} discipline={wide.discipline} />
           </figure>
@@ -116,7 +116,7 @@ const WorkPage = () => {
             ].map(o => (
               <figure key={o.title} className='m-0'>
                 <Link viewTransition to={`/obra/${o.slug}`} aria-label={`${o.title}, ver ampliada`} className='block'>
-                  <LitPhoto id={o.photo} falloff={0.45} className={`${o.ratio} w-full`} />
+                  <LitPhoto id={o.photo} size='thumb' falloff={0.45} className={`${o.ratio} w-full`} />
                 </Link>
                 <PhotoCaption title={o.title} discipline={o.discipline} />
               </figure>

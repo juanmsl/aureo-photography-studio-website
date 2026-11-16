@@ -11,7 +11,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 const VIRTUAL_ID = 'virtual:aureo-photos';
 const RESOLVED_ID = `\0${VIRTUAL_ID}`;
 
-export type PhotoSize = 'page' | 'view';
+export type PhotoSize = 'page' | 'thumb' | 'view';
 
 /**
  * Exposes `virtual:aureo-photos`: the signed Cloudinary URL of every photo in
@@ -20,9 +20,10 @@ export type PhotoSize = 'page' | 'view';
  *
  * The URLs are signed here, at build time, with the API secret from the
  * environment. Only the finished URLs reach the browser: never the secret and
- * never an URL to the original. Each URL uses a named transformation (page:
- * reduced, no watermark; view: bigger, tiled watermark), so editing it does not
- * give access to anything else.
+ * never an URL to the original. Each URL uses a named transformation (page: no
+ * watermark, for photos that cannot be enlarged; thumb: watermarked, for photos
+ * that open the enlarged view; view: the enlarged photo, bigger and watermarked),
+ * so editing it does not give access to anything else.
  */
 export const photosPlugin = (cloudinaryUrl?: string): Plugin => {
   let config: ResolvedConfig;
@@ -65,7 +66,7 @@ export const photosPlugin = (cloudinaryUrl?: string): Plugin => {
             transformation: [{ transformation: name }],
           });
 
-        urls[id] = { page: url('aureo_page'), view: url('aureo_view') };
+        urls[id] = { page: url('aureo_page'), thumb: url('aureo_thumb'), view: url('aureo_view') };
       }
 
       return `export const photoUrls = ${JSON.stringify(urls)};`;
