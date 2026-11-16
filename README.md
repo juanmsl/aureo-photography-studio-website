@@ -58,7 +58,7 @@ Approved brand marks (November 2026). Sources in `public/`, React components in 
 | Symbol (`Logo`) | `public/logo.svg` | The "Á" drawn as a doorway with light coming through. Loader and small spaces. |
 | Logotype (`Logotype`) | `public/logotipo.svg` | The symbol's lines as the "Á" + "ureo" in script, in one color (no doorway light). Navigation (48 px tall on mobile, 64 px on desktop), footer, link preview. |
 | Icon | `public/favicon.svg` | Amber symbol lines on a shadow (#120F0D) rounded square. Favicon and the PNG app icons. |
-| Watermark (`Watermark`) | `public/watermark.svg` | Single-line camera drawing, for the studio's own photographs (not used on the provisional moodboard photos). |
+| Watermark | `public/watermark.svg` | Camera drawing with the logotype, for the studio's own photographs. On the site it is applied by Cloudinary (see below). |
 
 Colors come from the theme: lines in `accent` (#E8A75B), the doorway in the same amber at 20 % opacity. `mono` renders the
 symbol or logotype in the text color. The original exports used a masked outside stroke; the clean files draw the
@@ -100,8 +100,9 @@ The photos are served from Cloudinary, never as originals:
 - **Only two versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
   - `aureo_page` (up to 1200 px, no watermark): every photo shown on the pages.
   - `aureo_view` (up to 2000 px): the enlarged photo on `/obra/:slug`. It carries the watermark
-    (`aureo/marca-de-agua`, the camera drawing from `scripts/cloudinary/watermark.svg`) small, rotated -30° and
-    repeated across the whole photo (`fl_tiled`) at 22 % opacity. The tile's transparent margin sets the spacing.
+    (`aureo/marca-de-agua`: the camera with the logotype, `scripts/cloudinary/watermark.svg`) repeated as a grid over
+    the whole photo (`fl_tiled`), rotated -30° and at 30 % opacity. The tile is 10 % of the photo's width
+    (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
 - **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
   and exposes them as `virtual:aureo-photos`. The secret never reaches the browser, and editing an URL (bigger
   size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the
