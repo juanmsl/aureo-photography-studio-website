@@ -12,7 +12,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "cloudinary:setup": "node --env-file=.env.local scripts/cloudinary-setup.mjs"
   },
   "dependencies": {
     "@fontsource/bricolage-grotesque": "^5.3.0",
@@ -38,6 +39,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "cloudinary": "^2.11.0",
     "eslint": "^9.39.5",
     "typescript": "~6.0.3",
     "vite": "^8.3.6",

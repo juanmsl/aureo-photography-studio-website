@@ -92,6 +92,41 @@ same outline with a 4 px stroke, without the mask.
 On Android (Chrome) the browser offers "Instalar app"; on iPhone, Safari → Compartir → "Agregar a inicio". The
 service worker only runs in `pnpm build` + `pnpm preview` or in production, not in `pnpm dev`.
 
+## Photos on Cloudinary
+
+The photos are served from Cloudinary, never as originals:
+
+- **Originals** are uploaded as `authenticated` assets (`aureo/obra/<name>`): they have no public URL.
+- **Only two versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
+  - `aureo_page` (up to 1200 px, no watermark): every photo shown on the pages.
+  - `aureo_view` (up to 2000 px): the enlarged photo on `/obra/:slug`. It carries the watermark
+    (`aureo/marca-de-agua`, the camera drawing from `scripts/cloudinary/watermark.svg`) small, rotated -30° and
+    repeated across the whole photo (`fl_tiled`) at 22 % opacity. The tile's transparent margin sets the spacing.
+- **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
+  and exposes them as `virtual:aureo-photos`. The secret never reaches the browser, and editing an URL (bigger
+  size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the
+  output so the originals are not published with the site.
+- **Without `CLOUDINARY_URL`** (for example a local `pnpm dev` with no `.env.local`) the site uses the local files in
+  `public/photos/`.
+- `LitPhoto` downloads each photo with `fetch` and shows it through a `blob:` URL, so the `<img>` in the inspector
+  does not point to Cloudinary (if the download fails it falls back to the direct URL). It also disables right
+  click, dragging and the iOS long-press menu. All of this only discourages: the request is still visible in the
+  network tab and anything shown on screen can be captured, which is why only reduced versions are public and the
+  large one is watermarked.
+
+### Setup
+
+1. Create a Cloudinary account. In **Settings → API Keys**, copy the **API environment variable**
+   (`CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>`).
+2. Put that line in `.env.local` at the root of this project (ignored by git; never commit it).
+3. In Vercel: **Settings → Environment Variables → CLOUDINARY_URL** with the same value (Production and Preview).
+4. Run `pnpm cloudinary:setup`. It uploads the watermark and the photos in `public/photos/` and creates the named
+   transformations (and deletes retired ones). Run it again whenever photos are added or the transformations
+   change.
+5. In Cloudinary: **Settings → Security → Strict transformations: enabled**. From then on only the named
+   transformations can be delivered.
+6. Redeploy on Vercel so the build signs the new URLs.
+
 ## Analytics
 
 `@vercel/analytics` (Web Analytics: visits and page views, without cookies) and `@vercel/speed-insights` (Core Web

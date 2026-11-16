@@ -1,11 +1,12 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
+import { photosPlugin } from './build/photos-plugin';
 import { seoPlugin } from './build/seo-plugin';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   // Served from the domain root on Vercel (see vercel.json).
   base: '/',
   plugins: [
@@ -13,6 +14,8 @@ export default defineConfig({
     tailwindcss(),
     // One HTML file per indexable route, 404.html and sitemap.xml (see build/seo-plugin.ts).
     seoPlugin(),
+    // Signed Cloudinary photo URLs (CLOUDINARY_URL from Vercel or .env.local); see build/photos-plugin.ts.
+    photosPlugin(loadEnv(mode, process.cwd(), '').CLOUDINARY_URL),
     /*
      * Installable PWA: the plugin writes manifest.webmanifest, links it from
      * index.html and generates the service worker (Workbox). start_url and
@@ -66,4 +69,4 @@ export default defineConfig({
       },
     }),
   ],
-});
+}));
