@@ -64,4 +64,3 @@ export const Logotype = ({ className, title, mono }: MarkProps) => (
     ))}
   </svg>
 );
-
