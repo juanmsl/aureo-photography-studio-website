@@ -24,7 +24,6 @@ const Hero = () => {
       <Navigation />
       <LitPhoto
         id='door'
-        size='large'
         falloff={0.42}
         priority
         className='mt-3 ml-[15%] aspect-[330/470] w-[85%] md:absolute md:top-[3.125rem] md:right-[5.5%] md:mt-0 md:ml-0 md:aspect-[540/800] md:w-[37.5%] md:max-w-[33.75rem]'

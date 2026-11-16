@@ -1,5 +1,6 @@
 import { cn } from 'polpo/helpers';
-import { useState, type MouseEvent } from 'react';
+import { useInView } from 'polpo/hooks';
+import { useEffect, useState, type MouseEvent, type RefObject } from 'react';
 import { photoUrls } from 'virtual:aureo-photos';
 
 import { photos, type PhotoId } from '../content/studio';
@@ -16,17 +17,58 @@ type LitPhotoProps = {
   circle?: boolean;
   priority?: boolean;
   position?: string;
-  /** large (up to 1600 px) for the single photo and the hero; medium (up to 900 px) elsewhere. */
-  size?: 'large' | 'medium';
+  /** page: reduced, without watermark (default). view: bigger, with the tiled watermark (enlarged photo). */
+  size?: 'page' | 'view';
 };
 
 const preventSave = (e: MouseEvent) => e.preventDefault();
 
 /**
+ * Loads the photo with fetch and shows it from a `blob:` URL, so "copy image
+ * address" and the element inspector do not show the Cloudinary URL. It only
+ * starts when the photo gets close to the viewport (or right away with
+ * `priority`), and frees the blob when the component unmounts. If the fetch
+ * fails (for example CORS), it falls back to the normal URL.
+ */
+const useBlobSrc = (src: string, start: boolean) => {
+  const [blobSrc, setBlobSrc] = useState<string>();
+
+  useEffect(() => {
+    if (!start) return undefined;
+
+    const controller = new AbortController();
+    let objectUrl: string | undefined;
+
+    fetch(src, { signal: controller.signal })
+      .then(response => {
+        if (!response.ok) throw new Error(String(response.status));
+
+        return response.blob();
+      })
+      .then(blob => {
+        objectUrl = URL.createObjectURL(blob);
+        setBlobSrc(objectUrl);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setBlobSrc(src);
+      });
+
+    return () => {
+      controller.abort();
+
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, [src, start]);
+
+  return blobSrc;
+};
+
+/**
  * "Lit" photo: the image emerges from the shadow, as if a beam lit it.
- * With Cloudinary configured it loads a signed, reduced and watermarked version
- * (see build/photos-plugin.ts); right click, drag and the iOS long-press menu
- * are disabled as a light deterrent.
+ * With Cloudinary configured it loads a signed version (reduced on the pages,
+ * bigger with the tiled watermark in the enlarged view; see
+ * build/photos-plugin.ts) through a `blob:` URL. Right click, drag and the iOS
+ * long-press menu are disabled as a light deterrent.
  */
 export const LitPhoto = ({
   id,
@@ -35,14 +77,23 @@ export const LitPhoto = ({
   circle,
   priority,
   position,
-  size = 'medium',
+  size = 'page',
 }: LitPhotoProps) => {
   const info = photos[id];
   const [failed, setFailed] = useState(false);
+  const { ref, inView } = useInView({ rootMargin: '400px' });
+  const [seen, setSeen] = useState(Boolean(priority));
+  const src = photoUrls?.[id]?.[size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`;
+  const blobSrc = useBlobSrc(src, seen);
+
+  useEffect(() => {
+    if (inView) setSeen(true);
+  }, [inView]);
   const start = Math.round(falloff * 100);
 
   return (
     <div
+      ref={ref as RefObject<HTMLDivElement>}
       onContextMenu={preventSave}
       className={cn(
         'relative overflow-hidden bg-surface select-none [-webkit-touch-callout:none]',
@@ -50,11 +101,10 @@ export const LitPhoto = ({
         className,
       )}
     >
-      {!failed && (
+      {!failed && blobSrc && (
         <img
-          src={photoUrls?.[id]?.[size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`}
+          src={blobSrc}
           alt={info.description}
-          loading={priority ? 'eager' : 'lazy'}
           decoding='async'
           draggable={false}
           onDragStart={preventSave}

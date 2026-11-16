@@ -59,7 +59,7 @@ export const WorkPhotoPage = () => {
       <figure className='m-0 mx-auto mt-6 flex w-full max-w-[70rem] flex-1 flex-col justify-center md:mt-11'>
         <LitPhoto
           id={o.photo}
-          size='large'
+          size='view'
           priority
           falloff={0.55}
           className='aspect-[4/5] w-full sm:aspect-[1120/640]'

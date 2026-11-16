@@ -6,9 +6,10 @@
  *
  * Reads CLOUDINARY_URL (cloudinary://<api_key>:<api_secret>@<cloud_name>) from
  * .env.local. It never prints the secret. It:
- *   1. Uploads the watermark (scripts/cloudinary/watermark.svg) as aureo/marca-de-agua.
- *   2. Creates or updates the named transformations aureo_large and aureo_medium
- *      (reduced size + watermark), allowed under "Strict transformations".
+ *   1. Uploads the watermark tile (scripts/cloudinary/watermark.svg) as aureo/marca-de-agua.
+ *   2. Creates or updates the named transformations aureo_page (reduced, no
+ *      watermark) and aureo_view (bigger, tiled diagonal watermark), allowed under
+ *      "Strict transformations", and deletes the retired ones.
  *   3. Uploads every photo in public/photos/ as an *authenticated* asset
  *      (aureo/obra/<name>): the original has no public URL; only signed URLs with
  *      one of the named transformations can be delivered.
@@ -18,7 +19,7 @@ import { basename, extname, join } from 'node:path';
 
 import { v2 as cloudinary } from 'cloudinary';
 
-import { TRANSFORMATIONS, WATERMARK_ID, photoPublicId } from './cloudinary/config.mjs';
+import { RETIRED_TRANSFORMATIONS, TRANSFORMATIONS, WATERMARK_ID, photoPublicId } from './cloudinary/config.mjs';
 
 if (!process.env.CLOUDINARY_URL) {
   console.error('Missing CLOUDINARY_URL. Add it to .env.local (see README → Photos on Cloudinary).');
@@ -48,6 +49,15 @@ for (const [name, transformation] of Object.entries(TRANSFORMATIONS)) {
 
     await cloudinary.api.update_transformation(name, { unsafe_update: transformation, allowed_for_strict: true });
     console.log(`✓ Named transformation ${name} updated`);
+  }
+}
+
+for (const name of RETIRED_TRANSFORMATIONS) {
+  try {
+    await cloudinary.api.delete_transformation(name);
+    console.log(`✓ Retired transformation ${name} deleted`);
+  } catch (error) {
+    if (error?.error?.http_code !== 404) throw error;
   }
 }
 
