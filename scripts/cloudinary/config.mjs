@@ -10,11 +10,13 @@ export const WATERMARK_ID = 'aureo/marca-de-agua';
 export const photoPublicId = name => `aureo/obra/${name}`;
 
 /**
- * Watermark repeated over the whole photo: the camera drawing, small, rotated
- * 30° and tiled. The tile (scripts/cloudinary/watermark.svg) carries its own
- * transparent margin, which sets the spacing between repetitions.
+ * Watermark repeated as a grid over the whole photo. The tile
+ * (scripts/cloudinary/watermark.svg) holds the mark already rotated -30° with a
+ * transparent margin, which sets the gap between repetitions. Its width is 10 %
+ * of the photo's (fl_relative), so the mark is the same relative size on every
+ * photo (about 6.7 % of the width), at 30 % opacity.
  */
-const tiledWatermark = `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,w_260/a_-30/o_22/fl_layer_apply,fl_tiled`;
+const tiledWatermark = `l_${WATERMARK_ID.replace(/\//g, ':')}/c_scale,fl_relative,w_0.1/o_30/fl_layer_apply,fl_tiled`;
 
 /** The only versions of a photo that can be delivered (Settings → Security → Strict transformations). */
 export const TRANSFORMATIONS = {
