@@ -17,8 +17,12 @@ type LitPhotoProps = {
   circle?: boolean;
   priority?: boolean;
   position?: string;
-  /** page: reduced, without watermark (default). view: bigger, with the tiled watermark (enlarged photo). */
-  size?: 'page' | 'view';
+  /**
+   * page: without watermark, for photos that cannot be enlarged (default).
+   * thumb: with the tiled watermark, for photos that link to the enlarged view.
+   * view: the enlarged photo, bigger and watermarked.
+   */
+  size?: 'page' | 'thumb' | 'view';
 };
 
 const preventSave = (e: MouseEvent) => e.preventDefault();
@@ -65,8 +69,8 @@ const useBlobSrc = (src: string, start: boolean) => {
 
 /**
  * "Lit" photo: the image emerges from the shadow, as if a beam lit it.
- * With Cloudinary configured it loads a signed version (reduced on the pages,
- * bigger with the tiled watermark in the enlarged view; see
+ * With Cloudinary configured it loads a signed version (watermarked when the
+ * photo can be enlarged or is the enlarged one; see
  * build/photos-plugin.ts) through a `blob:` URL. Right click, drag and the iOS
  * long-press menu are disabled as a light deterrent.
  */

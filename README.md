@@ -97,12 +97,16 @@ service worker only runs in `pnpm build` + `pnpm preview` or in production, not 
 The photos are served from Cloudinary, never as originals:
 
 - **Originals** are uploaded as `authenticated` assets (`aureo/obra/<name>`): they have no public URL.
-- **Only two versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
-  - `aureo_page` (up to 1200 px, no watermark): every photo shown on the pages.
-  - `aureo_view` (up to 2000 px): the enlarged photo on `/obra/:slug`. It carries the watermark
-    (`aureo/marca-de-agua`: the camera with the logotype, `scripts/cloudinary/watermark.svg`) repeated as a grid over
-    the whole photo (`fl_tiled`), rotated -30° and at 45 % opacity. The tile is 10 % of the photo's width
-    (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
+- **Only three versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
+  - `aureo_page` (up to 1600 px, no watermark): photos that cannot be enlarged (hero, sections, the disciplines
+    preview).
+  - `aureo_thumb` (up to 1600 px, watermarked): photos that open the enlarged view (the home selection and the
+    Obra grid). They are shown small, so the watermark tile is 16 % of the photo's width.
+  - `aureo_view` (up to 2560 px, watermarked): the enlarged photo on `/obra/:slug`, tile 10 % of the width.
+
+  The watermark (`aureo/marca-de-agua`: the camera with the logotype, `scripts/cloudinary/watermark.svg`) is
+  repeated as a grid over the whole photo (`fl_tiled`), rotated -30° and at 45 % opacity. The tile size is relative
+  to the photo (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
 - **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
   and exposes them as `virtual:aureo-photos`. The secret never reaches the browser, and editing an URL (bigger
   size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the

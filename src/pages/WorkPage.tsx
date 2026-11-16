@@ -46,6 +46,7 @@ const WorkItem = ({ o, i, query }: { o: Work; i: number; query: string }) => {
       >
         <LitPhoto
           id={o.photo}
+          size='thumb'
           className={cn(
             'w-full transition-[filter] duration-500 group-hover:brightness-110 motion-reduce:transition-none',
             shape
