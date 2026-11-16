@@ -14,7 +14,7 @@ const YEAR = new Date().getFullYear();
 /** Áureo logotype linking to the home page. */
 export const HomeLogo = ({ onClick, className }: { onClick?: () => void; className?: string }) => (
   <Link viewTransition to='/' onClick={onClick} aria-label='Áureo, inicio' className='inline-flex'>
-    <Logotype className={cn('h-16 w-auto md:h-[5.5rem]', className)} />
+    <Logotype className={cn('h-12 w-auto md:h-16', className)} />
   </Link>
 );
 
