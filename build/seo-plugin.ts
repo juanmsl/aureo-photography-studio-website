@@ -1,5 +1,5 @@
-import { SITE_URL } from '../src/content/studio';
-import { absoluteUrl, indexableRoutes, metaFor, type RouteMeta } from '../src/seo';
+import { SITE_URL } from '../src/content/studio.ts';
+import { absoluteUrl, indexableRoutes, metaFor, type RouteMeta } from '../src/seo.ts';
 
 import type { Plugin, Rollup } from 'vite';
 

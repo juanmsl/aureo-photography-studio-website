@@ -3,12 +3,29 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-import { photosPlugin } from './build/photos-plugin';
-import { seoPlugin } from './build/seo-plugin';
+import { photosPlugin } from './build/photos-plugin.ts';
+import { seoPlugin } from './build/seo-plugin.ts';
 
 export default defineConfig(({ mode }) => ({
   // Served from the domain root on Vercel (see vercel.json).
   base: '/',
+  build: {
+    rolldownOptions: {
+      output: {
+        /*
+         * Libraries go in their own chunks, apart from the app code: no chunk
+         * is over 500 kB, and they stay cached between deploys that only
+         * change the site.
+         */
+        codeSplitting: {
+          groups: [
+            { name: 'react', test: /[\\/]node_modules[\\/](react|react-dom|scheduler|react-router)[\\/]/ },
+            { name: 'vendor', test: /[\\/]node_modules[\\/]/ },
+          ],
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),

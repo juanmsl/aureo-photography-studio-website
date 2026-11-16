@@ -8,7 +8,7 @@
  * secondary phrase and statement. City, address and contact details are not
  * defined yet, so they are left out of the structured data.
  */
-import { brand, disciplineName, disciplines, SITE_URL, statement, works } from './content/studio';
+import { brand, disciplineName, disciplines, SITE_URL, statement, works } from './content/studio.ts';
 
 export type RouteMeta = {
   title: string;

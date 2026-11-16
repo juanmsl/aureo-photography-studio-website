@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { v2 as cloudinary } from 'cloudinary';
 
 import { photoPublicId } from '../scripts/cloudinary/config.mjs';
-import { photos } from '../src/content/studio';
+import { photos } from '../src/content/studio.ts';
 
 import type { Plugin, ResolvedConfig } from 'vite';
 
