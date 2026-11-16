@@ -101,7 +101,7 @@ The photos are served from Cloudinary, never as originals:
   - `aureo_page` (up to 1200 px, no watermark): every photo shown on the pages.
   - `aureo_view` (up to 2000 px): the enlarged photo on `/obra/:slug`. It carries the watermark
     (`aureo/marca-de-agua`: the camera with the logotype, `scripts/cloudinary/watermark.svg`) repeated as a grid over
-    the whole photo (`fl_tiled`), rotated -30° and at 30 % opacity. The tile is 10 % of the photo's width
+    the whole photo (`fl_tiled`), rotated -30° and at 45 % opacity. The tile is 10 % of the photo's width
     (`fl_relative`), so the mark is equally small on every photo; its transparent margin sets the gap.
 - **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
   and exposes them as `virtual:aureo-photos`. The secret never reaches the browser, and editing an URL (bigger
