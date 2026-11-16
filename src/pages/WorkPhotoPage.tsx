@@ -57,7 +57,13 @@ export const WorkPhotoPage = () => {
       </div>
 
       <figure className='m-0 mx-auto mt-6 flex w-full max-w-[70rem] flex-1 flex-col justify-center md:mt-11'>
-        <LitPhoto id={o.photo} priority falloff={0.55} className='aspect-[4/5] w-full sm:aspect-[1120/640]' />
+        <LitPhoto
+          id={o.photo}
+          size='large'
+          priority
+          falloff={0.55}
+          className='aspect-[4/5] w-full sm:aspect-[1120/640]'
+        />
         <div className='mt-6 flex flex-col gap-6 md:mt-10 md:flex-row md:items-end md:justify-between'>
           <PhotoCaption title={o.title} discipline={disciplineName(o.discipline)} className='mt-0' />
           <div className='flex flex-wrap items-center gap-x-8 gap-y-5'>

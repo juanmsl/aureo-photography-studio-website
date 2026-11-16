@@ -1,5 +1,6 @@
 import { cn } from 'polpo/helpers';
-import { useState } from 'react';
+import { useState, type MouseEvent } from 'react';
+import { photoUrls } from 'virtual:aureo-photos';
 
 import { photos, type PhotoId } from '../content/studio';
 
@@ -15,22 +16,48 @@ type LitPhotoProps = {
   circle?: boolean;
   priority?: boolean;
   position?: string;
+  /** large (up to 1600 px) for the single photo and the hero; medium (up to 900 px) elsewhere. */
+  size?: 'large' | 'medium';
 };
 
-/** "Lit" photo: the image emerges from the shadow, as if a beam lit it. */
-export const LitPhoto = ({ id, className, falloff = 0.5, circle, priority, position }: LitPhotoProps) => {
+const preventSave = (e: MouseEvent) => e.preventDefault();
+
+/**
+ * "Lit" photo: the image emerges from the shadow, as if a beam lit it.
+ * With Cloudinary configured it loads a signed, reduced and watermarked version
+ * (see build/photos-plugin.ts); right click, drag and the iOS long-press menu
+ * are disabled as a light deterrent.
+ */
+export const LitPhoto = ({
+  id,
+  className,
+  falloff = 0.5,
+  circle,
+  priority,
+  position,
+  size = 'medium',
+}: LitPhotoProps) => {
   const info = photos[id];
   const [failed, setFailed] = useState(false);
   const start = Math.round(falloff * 100);
 
   return (
-    <div className={cn('relative overflow-hidden bg-surface', circle && 'rounded-full', className)}>
+    <div
+      onContextMenu={preventSave}
+      className={cn(
+        'relative overflow-hidden bg-surface select-none [-webkit-touch-callout:none]',
+        circle && 'rounded-full',
+        className,
+      )}
+    >
       {!failed && (
         <img
-          src={`${import.meta.env.BASE_URL}photos/${info.file}`}
+          src={photoUrls?.[id]?.[size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`}
           alt={info.description}
           loading={priority ? 'eager' : 'lazy'}
           decoding='async'
+          draggable={false}
+          onDragStart={preventSave}
           onError={() => setFailed(true)}
           style={position ? { objectPosition: position } : undefined}
           className='absolute inset-0 size-full object-cover'

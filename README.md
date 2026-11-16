@@ -92,6 +92,36 @@ same outline with a 4 px stroke, without the mask.
 On Android (Chrome) the browser offers "Instalar app"; on iPhone, Safari → Compartir → "Agregar a inicio". The
 service worker only runs in `pnpm build` + `pnpm preview` or in production, not in `pnpm dev`.
 
+## Photos on Cloudinary
+
+The photos are served from Cloudinary, never as originals:
+
+- **Originals** are uploaded as `authenticated` assets (`aureo/obra/<name>`): they have no public URL.
+- **Only two versions can be delivered**, the named transformations `aureo_large` (up to 1600 px, single photo and
+  hero) and `aureo_medium` (up to 900 px, everything else). Both are compressed and carry the watermark
+  (`aureo/marca-de-agua`, the camera drawing) in the center, at 30 % opacity. They are defined in
+  `scripts/cloudinary/config.mjs`.
+- **Signed URLs**: `build/photos-plugin.ts` signs one URL per photo and size at build time with `CLOUDINARY_URL`
+  and exposes them as `virtual:aureo-photos`. The secret never reaches the browser, and editing an URL (bigger
+  size, no watermark) breaks the signature. When Cloudinary is on, the build also drops `public/photos` from the
+  output so the originals are not published with the site.
+- **Without `CLOUDINARY_URL`** (for example a local `pnpm dev` with no `.env.local`) the site uses the local files in
+  `public/photos/`.
+- `LitPhoto` also disables right click, dragging and the iOS long-press menu on photos. That only discourages:
+  anything shown on screen can be captured, which is why only reduced, watermarked versions are public.
+
+### Setup
+
+1. Create a Cloudinary account. In **Settings → API Keys**, copy the **API environment variable**
+   (`CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>`).
+2. Put that line in `.env.local` at the root of this project (ignored by git; never commit it).
+3. In Vercel: **Settings → Environment Variables → CLOUDINARY_URL** with the same value (Production and Preview).
+4. Run `pnpm cloudinary:setup`. It uploads the watermark and the photos in `public/photos/` and creates the named
+   transformations. Run it again whenever photos are added or the transformations change.
+5. In Cloudinary: **Settings → Security → Strict transformations: enabled**. From then on only the named
+   transformations can be delivered.
+6. Redeploy on Vercel so the build signs the new URLs.
+
 ## Analytics
 
 `@vercel/analytics` (Web Analytics: visits and page views, without cookies) and `@vercel/speed-insights` (Core Web
