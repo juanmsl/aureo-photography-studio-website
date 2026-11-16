@@ -56,7 +56,7 @@ Approved brand marks (November 2026). Sources in `public/`, React components in 
 | Mark | File | Use |
 |---|---|---|
 | Symbol (`Logo`) | `public/logo.svg` | The "Á" drawn as a doorway with light coming through. Loader and small spaces. |
-| Logotype (`Logotype`) | `public/logotipo.svg` | The symbol's lines as the "Á" + "ureo" in script, in one color (no doorway light). Navigation (64–88 px tall), footer, link preview. |
+| Logotype (`Logotype`) | `public/logotipo.svg` | The symbol's lines as the "Á" + "ureo" in script, in one color (no doorway light). Navigation (48 px tall on mobile, 64 px on desktop), footer, link preview. |
 | Icon | `public/favicon.svg` | Amber symbol lines on a shadow (#120F0D) rounded square. Favicon and the PNG app icons. |
 | Watermark (`Watermark`) | `public/watermark.svg` | Single-line camera drawing, for the studio's own photographs (not used on the provisional moodboard photos). |
 
