@@ -48,6 +48,8 @@ export default defineConfig(({ mode }) => ({
         // App shell only; photos and fonts are cached the first time they are used.
         globPatterns: ['**/*.{js,css,html,svg}', 'pwa-*.png'],
         navigateFallback: 'index.html',
+        // Files that are not pages (sitemap.xml, robots.txt) must reach the server, not the app shell.
+        navigateFallbackDenylist: [/\.(?:xml|txt)$/],
         runtimeCaching: [
           {
             urlPattern: ({ request }) => request.destination === 'font',
