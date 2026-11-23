@@ -8,6 +8,7 @@ import { LitPhoto } from '../components/LitPhoto';
 import { PhotoCaption } from '../components/PhotoCaption';
 import { TextLink } from '../components/TextLink';
 import { statement, disciplines, brand, featuredWork } from '../content/studio';
+import { preloadOnHover } from '../photoLoader';
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -19,16 +20,10 @@ const Hero = () => {
     >
       <span
         aria-hidden
-        className='pointer-events-none absolute top-[27.5rem] left-[10%] h-[16rem] w-[26rem] rounded-full bg-accent/20 blur-[90px] md:top-auto md:bottom-[-11rem] md:left-[36%] md:h-[23.75rem] md:w-[58.75rem] md:blur-[130px]'
+        className='pointer-events-none absolute top-[10rem] left-[10%] h-[16rem] w-[26rem] rounded-full bg-accent/20 blur-[90px] md:top-auto md:bottom-[-11rem] md:left-[36%] md:h-[23.75rem] md:w-[58.75rem] md:blur-[130px]'
       />
       <Navigation />
-      <LitPhoto
-        id='door'
-        falloff={0.42}
-        priority
-        className='mt-3 ml-[15%] aspect-[330/470] w-[85%] md:absolute md:top-[3.125rem] md:right-[5.5%] md:mt-0 md:ml-0 md:aspect-[540/800] md:w-[37.5%] md:max-w-[33.75rem]'
-      />
-      <div className='relative grid gap-4 px-5 pt-6 pb-12 md:mt-auto md:mb-auto md:max-w-[57rem] md:gap-0 md:px-24 md:py-0'>
+      <div className='relative grid gap-4 px-5 pt-16 pb-24 md:mt-auto md:mb-auto md:max-w-[57rem] md:gap-0 md:px-24 md:py-0'>
         <Typography id='slogan' variant='hero' as='h1' noPadding className='m-0 text-fg-strong'>
           Lo extraordinario,
           <br />
@@ -97,14 +92,26 @@ const WorkPage = () => {
 
       <div className='mt-10 grid gap-10 md:mt-19 md:grid-cols-[560fr_624fr] md:gap-16'>
         <figure className='m-0'>
-          <Link viewTransition to={`/obra/${tall.slug}`} aria-label={`${tall.title}, ver ampliada`} className='block'>
+          <Link
+            viewTransition
+            to={`/obra/${tall.slug}`}
+            {...preloadOnHover(tall.photo)}
+            aria-label={`${tall.title}, ver ampliada`}
+            className='block'
+          >
             <LitPhoto id={tall.photo} size='thumb' className='aspect-[560/760] w-full' />
           </Link>
           <PhotoCaption title={tall.title} discipline={tall.discipline} />
         </figure>
         <div className='grid content-start gap-10 md:gap-0'>
           <figure className='m-0'>
-            <Link viewTransition to={`/obra/${wide.slug}`} aria-label={`${wide.title}, ver ampliada`} className='block'>
+            <Link
+              viewTransition
+              to={`/obra/${wide.slug}`}
+              {...preloadOnHover(wide.photo)}
+              aria-label={`${wide.title}, ver ampliada`}
+              className='block'
+            >
               <LitPhoto id={wide.photo} size='thumb' className='aspect-[624/380] w-full' />
             </Link>
             <PhotoCaption title={wide.title} discipline={wide.discipline} />
@@ -115,7 +122,13 @@ const WorkPage = () => {
               { ...pairRight, ratio: 'aspect-[280/400]' },
             ].map(o => (
               <figure key={o.title} className='m-0'>
-                <Link viewTransition to={`/obra/${o.slug}`} aria-label={`${o.title}, ver ampliada`} className='block'>
+                <Link
+                  viewTransition
+                  to={`/obra/${o.slug}`}
+                  {...preloadOnHover(o.photo)}
+                  aria-label={`${o.title}, ver ampliada`}
+                  className='block'
+                >
                   <LitPhoto id={o.photo} size='thumb' falloff={0.45} className={`${o.ratio} w-full`} />
                 </Link>
                 <PhotoCaption title={o.title} discipline={o.discipline} />

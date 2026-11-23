@@ -8,6 +8,7 @@ import { Navigation, Footer } from '../components/Layout';
 import { LitPhoto } from '../components/LitPhoto';
 import { PhotoCaption } from '../components/PhotoCaption';
 import { disciplines, disciplineName, works, INITIAL_WORK_COUNT, type Work } from '../content/studio';
+import { preloadOnHover } from '../photoLoader';
 
 /**
  * Gallery rhythm, taken from the design: a large portrait next to a landscape
@@ -41,6 +42,7 @@ const WorkItem = ({ o, i, query }: { o: Work; i: number; query: string }) => {
       <Link
         viewTransition
         to={`/obra/${o.slug}${query}`}
+        {...preloadOnHover(o.photo)}
         className='group block'
         aria-label={`${o.title}, ${disciplineName(o.discipline)}. Ver ampliada`}
       >

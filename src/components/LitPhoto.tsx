@@ -1,9 +1,9 @@
 import { cn } from 'polpo/helpers';
 import { useInView } from 'polpo/hooks';
 import { useEffect, useState, type MouseEvent, type RefObject } from 'react';
-import { photoUrls } from 'virtual:aureo-photos';
 
 import { photos, type PhotoId } from '../content/studio';
+import { loadedPhoto, loadPhoto, photoSrc, sizeForWidth, type PhotoSize } from '../photoLoader';
 
 type LitPhotoProps = {
   id: PhotoId;
@@ -20,6 +20,7 @@ type LitPhotoProps = {
   /**
    * page: without watermark, for photos that cannot be enlarged (default).
    * thumb: with the tiled watermark, for photos that link to the enlarged view.
+   * Both use their 900 px version when the box is small.
    * view: the enlarged photo, bigger and watermarked.
    */
   size?: 'page' | 'thumb' | 'view';
@@ -28,51 +29,40 @@ type LitPhotoProps = {
 const preventSave = (e: MouseEvent) => e.preventDefault();
 
 /**
- * Loads the photo with fetch and shows it from a `blob:` URL, so "copy image
- * address" and the element inspector do not show the Cloudinary URL. It only
- * starts when the photo gets close to the viewport (or right away with
- * `priority`), and frees the blob when the component unmounts. If the fetch
- * fails (for example CORS), it falls back to the normal URL.
+ * The `blob:` URL of `src` (see `loadPhoto`): right away when it was already
+ * downloaded in this visit, otherwise once the download ends.
  */
-const useBlobSrc = (src: string, start: boolean) => {
-  const [blobSrc, setBlobSrc] = useState<string>();
+const useLoadedPhoto = (src?: string) => {
+  const [result, setResult] = useState<{ src: string; url: string }>();
 
   useEffect(() => {
-    if (!start) return undefined;
+    if (!src || loadedPhoto(src)) return undefined;
 
-    const controller = new AbortController();
-    let objectUrl: string | undefined;
+    let active = true;
 
-    fetch(src, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) throw new Error(String(response.status));
-
-        return response.blob();
-      })
-      .then(blob => {
-        objectUrl = URL.createObjectURL(blob);
-        setBlobSrc(objectUrl);
-      })
-      .catch(() => {
-        if (!controller.signal.aborted) setBlobSrc(src);
-      });
+    void loadPhoto(src).then(url => {
+      if (active) setResult({ src, url });
+    });
 
     return () => {
-      controller.abort();
-
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      active = false;
     };
-  }, [src, start]);
+  }, [src]);
 
-  return blobSrc;
+  if (!src) return undefined;
+
+  return loadedPhoto(src) ?? (result?.src === src ? result.url : undefined);
 };
 
 /**
  * "Lit" photo: the image emerges from the shadow, as if a beam lit it.
  * With Cloudinary configured it loads a signed version (watermarked when the
- * photo can be enlarged or is the enlarged one; see
- * build/photos-plugin.ts) through a `blob:` URL. Right click, drag and the iOS
- * long-press menu are disabled as a light deterrent.
+ * photo can be enlarged or is the enlarged one; see build/photos-plugin.ts)
+ * through a `blob:` URL, once the photo gets close to the viewport (right away
+ * with `priority`). Photos are downloaded once per visit (src/photoLoader.ts).
+ * The enlarged view first shows the grid version if it was already loaded, then
+ * swaps to the big one. Right click, drag and the iOS long-press menu are
+ * disabled as a light deterrent.
  */
 export const LitPhoto = ({
   id,
@@ -84,15 +74,28 @@ export const LitPhoto = ({
   size = 'page',
 }: LitPhotoProps) => {
   const info = photos[id];
-  const [failed, setFailed] = useState(false);
   const { ref, inView } = useInView({ rootMargin: '400px' });
-  const [seen, setSeen] = useState(Boolean(priority));
-  const src = photoUrls?.[id]?.[size] ?? `${import.meta.env.BASE_URL}photos/${info.file}`;
-  const blobSrc = useBlobSrc(src, seen);
+  const [version, setVersion] = useState<PhotoSize>();
+  const [failedSrc, setFailedSrc] = useState<string>();
 
+  // Pick the version when the photo is about to be seen, by the box's width.
   useEffect(() => {
-    if (inView) setSeen(true);
-  }, [inView]);
+    if (version || !(priority || inView)) return;
+
+    const width = (ref as RefObject<HTMLElement>).current?.getBoundingClientRect().width ?? Infinity;
+
+    setVersion(sizeForWidth(size, width));
+  }, [version, priority, inView, ref, size]);
+
+  const src = version && photoSrc(id, version);
+  const loaded = useLoadedPhoto(src);
+  // While the enlarged photo downloads, show the grid version if it is already here.
+  const preview =
+    size === 'view' && !loaded
+      ? (loadedPhoto(photoSrc(id, 'thumb')) ?? loadedPhoto(photoSrc(id, 'thumbSmall')))
+      : undefined;
+  const shown = loaded ?? preview;
+  const failed = shown !== undefined && shown === failedSrc;
   const start = Math.round(falloff * 100);
 
   return (
@@ -105,14 +108,14 @@ export const LitPhoto = ({
         className,
       )}
     >
-      {!failed && blobSrc && (
+      {!failed && shown && (
         <img
-          src={blobSrc}
+          src={shown}
           alt={info.description}
           decoding='async'
           draggable={false}
           onDragStart={preventSave}
-          onError={() => setFailed(true)}
+          onError={() => setFailedSrc(shown)}
           style={position ? { objectPosition: position } : undefined}
           className='absolute inset-0 size-full object-cover'
         />
