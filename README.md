@@ -97,11 +97,13 @@ service worker only runs in `pnpm build` + `pnpm preview` or in production, not 
 The photos are served from Cloudinary, never as originals:
 
 - **Originals** are uploaded as `authenticated` assets (`aureo/obra/<name>`): they have no public URL.
-- **Only three versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
+- **Only these versions can be delivered**, the named transformations defined in `scripts/cloudinary/config.mjs`:
   - `aureo_page` (up to 1600 px, no watermark): photos that cannot be enlarged (hero, sections, the disciplines
     preview).
   - `aureo_thumb` (up to 1600 px, watermarked): photos that open the enlarged view (the home selection and the
     Obra grid). They are shown small, so the watermark tile is 16 % of the photo's width.
+  - `aureo_page_small` and `aureo_thumb_small`: the same two, up to 900 px. `LitPhoto` picks them when the box is
+    at most 900 device pixels wide.
   - `aureo_view` (up to 2560 px, watermarked): the enlarged photo on `/obra/:slug`, tile 10 % of the width.
 
   The watermark (`aureo/marca-de-agua`: the camera with the logotype, `scripts/cloudinary/watermark.svg`) is
@@ -118,6 +120,11 @@ The photos are served from Cloudinary, never as originals:
   click, dragging and the iOS long-press menu. All of this only discourages: the request is still visible in the
   network tab and anything shown on screen can be captured, which is why only reduced versions are public and the
   large one is watermarked.
+- **Loading speed** (`src/photoLoader.ts`): each photo is downloaded once per visit and kept in memory, so it is
+  never fetched twice. The enlarged view first shows the grid version if it is already loaded and swaps to the big
+  one when it arrives; it also preloads the previous and next photos, and a grid photo starts loading its big
+  version on hover. `pnpm cloudinary:setup` generates every version at upload time (eager), so no visitor waits
+  for Cloudinary to create one.
 
 ### Setup
 
@@ -125,9 +132,10 @@ The photos are served from Cloudinary, never as originals:
    (`CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>`).
 2. Put that line in `.env.local` at the root of this project (ignored by git; never commit it).
 3. In Vercel: **Settings → Environment Variables → CLOUDINARY_URL** with the same value (Production and Preview).
-4. Run `pnpm cloudinary:setup`. It uploads the watermark and the photos in `public/photos/` and creates the named
-   transformations (and deletes retired ones). Run it again whenever photos are added or the transformations
-   change.
+4. Run `pnpm cloudinary:setup`. It creates the named transformations (and deletes retired ones), uploads the
+   watermark and the photos in `public/photos/` that are not in Cloudinary yet, and generates every version of
+   every photo. Run it again whenever photos are added. After changing a photo file, the watermark or a
+   transformation, run `pnpm cloudinary:setup --force`: it re-uploads everything and purges the cached versions.
 5. In Cloudinary: **Settings → Security → Strict transformations: enabled**. From then on only the named
    transformations can be delivered.
 6. Redeploy on Vercel so the build signs the new URLs.

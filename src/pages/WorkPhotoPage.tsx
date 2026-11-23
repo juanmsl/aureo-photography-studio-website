@@ -1,11 +1,13 @@
 import { Button, Typography } from 'polpo/components';
 import { useEventListener } from 'polpo/hooks';
+import { useEffect } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router';
 
 import { LitPhoto } from '../components/LitPhoto';
 import { PhotoCaption } from '../components/PhotoCaption';
 import { TextLink } from '../components/TextLink';
 import { disciplineName, works } from '../content/studio';
+import { loadPhoto, photoSrc, preloadPhoto } from '../photoLoader';
 
 import { NotFoundPage } from './NotFoundPage';
 
@@ -33,6 +35,29 @@ export const WorkPhotoPage = () => {
 
     if (e.key === 'Escape') navigate(`/obra${query}`, { viewTransition: true });
   });
+
+  const currentPhoto = i < 0 ? undefined : list[i].photo;
+  const nextPhoto = i < 0 ? undefined : list[(i + 1) % list.length].photo;
+  const previousPhoto = i < 0 ? undefined : list[(i - 1 + list.length) % list.length].photo;
+
+  // Once the current photo is here, download its neighbors so the next change is instant.
+  useEffect(() => {
+    if (!currentPhoto) return undefined;
+
+    let active = true;
+
+    void loadPhoto(photoSrc(currentPhoto, 'view')).then(() => {
+      if (!active) return;
+
+      if (nextPhoto) preloadPhoto(nextPhoto, 'view');
+
+      if (previousPhoto) preloadPhoto(previousPhoto, 'view');
+    });
+
+    return () => {
+      active = false;
+    };
+  }, [currentPhoto, nextPhoto, previousPhoto]);
 
   if (i < 0) return <NotFoundPage />;
 
