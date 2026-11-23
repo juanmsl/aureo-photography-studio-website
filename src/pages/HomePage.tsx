@@ -20,16 +20,10 @@ const Hero = () => {
     >
       <span
         aria-hidden
-        className='pointer-events-none absolute top-[27.5rem] left-[10%] h-[16rem] w-[26rem] rounded-full bg-accent/20 blur-[90px] md:top-auto md:bottom-[-11rem] md:left-[36%] md:h-[23.75rem] md:w-[58.75rem] md:blur-[130px]'
+        className='pointer-events-none absolute top-[10rem] left-[10%] h-[16rem] w-[26rem] rounded-full bg-accent/20 blur-[90px] md:top-auto md:bottom-[-11rem] md:left-[36%] md:h-[23.75rem] md:w-[58.75rem] md:blur-[130px]'
       />
       <Navigation />
-      <LitPhoto
-        id='door'
-        falloff={0.42}
-        priority
-        className='mt-3 ml-[15%] aspect-[330/470] w-[85%] md:absolute md:top-[3.125rem] md:right-[5.5%] md:mt-0 md:ml-0 md:aspect-[540/800] md:w-[37.5%] md:max-w-[33.75rem]'
-      />
-      <div className='relative grid gap-4 px-5 pt-6 pb-12 md:mt-auto md:mb-auto md:max-w-[57rem] md:gap-0 md:px-24 md:py-0'>
+      <div className='relative grid gap-4 px-5 pt-16 pb-24 md:mt-auto md:mb-auto md:max-w-[57rem] md:gap-0 md:px-24 md:py-0'>
         <Typography id='slogan' variant='hero' as='h1' noPadding className='m-0 text-fg-strong'>
           Lo extraordinario,
           <br />
